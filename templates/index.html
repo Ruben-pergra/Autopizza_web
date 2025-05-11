@@ -1,43 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PizzaBot</title>
+  <title>Botón MQTT</title>
 </head>
 <body>
-  <h1>Haz tu pedido</h1>
-
-  <form id="loginForm">
-    <input type="text" id="username" placeholder="Usuario" required>
-    <input type="password" id="password" placeholder="Contraseña" required>
-    <button type="submit">Iniciar sesión</button>
-  </form>
-
-  <div id="botones" style="display:none;">
-    <h2>Elige tu pizza:</h2>
-    <button onclick="enviarPedido('Bacon')">Bacon</button>
-    <button onclick="enviarPedido('Peperoni')">Peperoni</button>
-    <button onclick="enviarPedido('Champiñones')">Champiñones</button>
-  </div>
+  <h1>Presiona el botón</h1>
+  <button onclick="enviarMensaje()">Enviar Hola</button>
 
   <script>
-    let usuario = "";
-
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      usuario = document.getElementById("username").value;
-      if (usuario) {
-        document.getElementById("botones").style.display = "block";
-      }
-    });
-
-    function enviarPedido(pizza) {
-      fetch('/pedido', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario: usuario, pizza: pizza })
-      })
-      .then(res => res.text())
-      .then(data => alert(data));
+    function enviarMensaje() {
+      fetch('/enviar', { method: 'POST' })
+        .then(res => res.text())
+        .then(data => alert('Respuesta del servidor: ' + data))
+        .catch(err => alert('Error al enviar: ' + err));
     }
   </script>
 </body>
