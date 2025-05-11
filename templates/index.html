@@ -1,20 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mi Web</title>
+  <title>PizzaBot</title>
 </head>
 <body>
-  <h1>Hola desde Flask</h1>
-  <button onclick="presionarBoton()">Pedir Pizza Bacon</button>
+  <h1>Haz tu pedido</h1>
+
+  <form id="loginForm">
+    <input type="text" id="username" placeholder="Usuario" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Iniciar sesión</button>
+  </form>
+
+  <div id="botones" style="display:none;">
+    <h2>Elige tu pizza:</h2>
+    <button onclick="enviarPedido('pizzaBacon')">Bacon</button>
+    <button onclick="enviarPedido('pizzaPeperoni')">Peperoni</button>
+    <button onclick="enviarPedido('pizzaChampis')">Champiñones</button>
+  </div>
 
   <script>
-    function presionarBoton() {
-      fetch('/boton', {
+    let usuario = "";
+
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      usuario = document.getElementById("username").value;
+      // No vamos a enviar la contraseña, solo validar que haya algo
+      if (usuario) {
+        document.getElementById("botones").style.display = "block";
+      }
+    });
+
+    function enviarPedido(pizza) {
+      fetch('/pedido', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ mensaje: 'PizzaBacon' })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario: usuario, pizza: pizza })
       })
       .then(res => res.text())
       .then(data => alert(data));
