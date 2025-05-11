@@ -24,6 +24,7 @@ def pedido():
     pizza = data.get('pizza', 'desconocida')
     mensaje = f"{usuario} ha pedido: {pizza}"
     mqtt_client.publish(MQTT_TOPIC, mensaje)
+    publish.single("test/pizzabot", "Prueba desde Python", hostname="broker.hivemq.com")
     return 'Pedido enviado correctamente'
 
 if __name__ == '__main__':
