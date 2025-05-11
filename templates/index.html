@@ -14,9 +14,9 @@
 
   <div id="botones" style="display:none;">
     <h2>Elige tu pizza:</h2>
-    <button onclick="enviarPedido('pizzaBacon')">Bacon</button>
-    <button onclick="enviarPedido('pizzaPeperoni')">Peperoni</button>
-    <button onclick="enviarPedido('pizzaChampis')">Champiñones</button>
+    <button onclick="enviarPedido('Bacon')">Bacon</button>
+    <button onclick="enviarPedido('Peperoni')">Peperoni</button>
+    <button onclick="enviarPedido('Champiñones')">Champiñones</button>
   </div>
 
   <script>
@@ -25,7 +25,6 @@
     document.getElementById("loginForm").addEventListener("submit", function(e) {
       e.preventDefault();
       usuario = document.getElementById("username").value;
-      // No vamos a enviar la contraseña, solo validar que haya algo
       if (usuario) {
         document.getElementById("botones").style.display = "block";
       }
