@@ -7,8 +7,8 @@ app = Flask(__name__)
 MQTT_BROKER = 'broker.hivemq.com'  # puedes cambiarlo a otro
 MQTT_PORT = 1883
 MQTT_TOPIC = 'test/pizzabot'
-MQTT_USERNAME = 'usuario123'  # pon lo que tú quieras
-MQTT_PASSWORD = 'claveSegura456'
+MQTT_USERNAME = 'AutoPizza'  # pon lo que tú quieras
+MQTT_PASSWORD = '8523'
 
 # Cliente MQTT
 mqtt_client = mqtt.Client()
