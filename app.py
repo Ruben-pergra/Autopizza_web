@@ -9,7 +9,7 @@ MQTT_TOPIC = 'test/pizzabot'
 
 @app.route('/')
 def index():
-    return render_template('basic.html')
+    return render_template('index.html')
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
