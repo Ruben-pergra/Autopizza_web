@@ -27,7 +27,7 @@ def index():
 def enviar():
     mensaje = "Hola"
     try:
-        mqtt_client.publish(MQTT_TOPIC, mensaje)
+        mqtt_client.publish(MQTT_TOPIC, mensaje, retain=True)
         print("📨 Mensaje MQTT enviado:", mensaje)
         return 'OK'
     except Exception as e:
