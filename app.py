@@ -1,10 +1,23 @@
-from flask import Flask, render_template
+from flask import Flask, request
+import paho.mqtt.publish as publish
 
 app = Flask(__name__)
 
-@app.route('/')
-def home():
-    return render_template('index.html')  # Carga el HTML cuando visitas la web
+@app.route("/")
+def index():
+    return open("templates/index.html").read()
 
-if __name__ == '__main__':
-    app.run()
+@app.route("/boton", methods=["POST"])
+def boton():
+    data = request.get_json()
+    mensaje = data.get("mensaje", "")
+
+    # Enviamos mensaje al broker MQTT público de HiveMQ
+    publish.single(
+        topic="test/pizzabot",              # puedes cambiar el topic
+        payload=mensaje,
+        hostname="broker.hivemq.com",
+        port=1883
+    )
+
+    return "Mensaje enviado: " + mensaje
