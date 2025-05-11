@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # MQTT Config
 MQTT_BROKER = 'broker.hivemq.com'
-MQTT_PORT = 1883
+MQTT_PORT = 8884
 MQTT_TOPIC = 'test/pizzabot'
 
 # Configurar cliente MQTT
