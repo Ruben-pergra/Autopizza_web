@@ -1,23 +1,33 @@
-from flask import Flask, request
-import paho.mqtt.publish as publish
+from flask import Flask, request, render_template
+import paho.mqtt.client as mqtt
 
 app = Flask(__name__)
 
-@app.route("/")
+# MQTT Config
+MQTT_BROKER = 'broker.hivemq.com'  # puedes cambiarlo a otro
+MQTT_PORT = 1883
+MQTT_TOPIC = 'test/pizzabot'
+MQTT_USERNAME = 'usuario123'  # pon lo que tú quieras
+MQTT_PASSWORD = 'claveSegura456'
+
+# Cliente MQTT
+mqtt_client = mqtt.Client()
+mqtt_client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
+mqtt_client.connect(MQTT_BROKER, MQTT_PORT)
+mqtt_client.loop_start()
+
+@app.route('/')
 def index():
-    return open("templates/index.html").read()
+    return render_template('index.html')  # asegúrate de tener el HTML en /templates
 
-@app.route("/boton", methods=["POST"])
-def boton():
+@app.route('/pedido', methods=['POST'])
+def pedido():
     data = request.get_json()
-    mensaje = data.get("mensaje", "")
+    usuario = data.get('usuario', 'anónimo')
+    pizza = data.get('pizza', 'desconocida')
+    mensaje = f"{usuario} ha pedido: {pizza}"
+    mqtt_client.publish(MQTT_TOPIC, mensaje)
+    return 'Pedido enviado'
 
-    # Enviamos mensaje al broker MQTT público de HiveMQ
-    publish.single(
-        topic="test/pizzabot",              # puedes cambiar el topic
-        payload=mensaje,
-        hostname="broker.hivemq.com",
-        port=1883
-    )
-
-    return "Mensaje enviado: " + mensaje
+if __name__ == '__main__':
+    app.run(debug=True)
