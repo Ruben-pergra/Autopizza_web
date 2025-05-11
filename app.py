@@ -7,4 +7,4 @@ def home():
     return render_template('index.html')  # Carga el HTML cuando visitas la web
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
