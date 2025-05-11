@@ -1,28 +1,24 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Mi Página Flask</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 100px;
-    }
-    h1 {
-      font-size: 48px;
-      color: #333;
-    }
-    button {
-      font-size: 24px;
-      padding: 10px 20px;
-      margin-top: 20px;
-      cursor: pointer;
-    }
-  </style>
+  <title>Mi Web</title>
 </head>
 <body>
-  <h1>¡Bienvenido a mi página Flask!</h1>
-  <button onclick="alert('¡Botón pulsado!')">Púlsame</button>
+  <h1>Hola desde Flask</h1>
+  <button onclick="presionarBoton()">Pedir Pizza Bacon</button>
+
+  <script>
+    function presionarBoton() {
+      fetch('/boton', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mensaje: 'PizzaBacon' })
+      })
+      .then(res => res.text())
+      .then(data => alert(data));
+    }
+  </script>
 </body>
 </html>
