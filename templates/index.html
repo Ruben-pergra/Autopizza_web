@@ -5,15 +5,8 @@
 </head>
 <body>
   <h1>Presiona el botón</h1>
-  <button onclick="enviarMensaje()">Enviar Hola</button>
-
-  <script>
-    function enviarMensaje() {
-      fetch('/enviar', { method: 'POST' })
-        .then(res => res.text())
-        .then(data => alert('Respuesta del servidor: ' + data))
-        .catch(err => alert('Error al enviar: ' + err));
-    }
-  </script>
+  <form action="/enviar" method="POST">
+    <button type="submit">Enviar mensaje</button>
+  </form>
 </body>
 </html>
