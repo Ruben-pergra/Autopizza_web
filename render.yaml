@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: mi-app-flask
+    name: Autopizza_web
     env: python
     buildCommand: ""
     startCommand: gunicorn app:app
