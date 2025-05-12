@@ -26,9 +26,6 @@ def enviar():
     print("📨 Mensaje MQTT enviado:", mensaje)
     client.loop_stop()
     return 'OK'
-    except Exception as e:
-        print("❌ Error al enviar mensaje MQTT:", e)
-        return 'ERROR', 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
