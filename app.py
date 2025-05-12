@@ -8,15 +8,7 @@ MQTT_BROKER = 'broker.emqx.io'
 MQTT_PORT = 8084
 MQTT_TOPIC = 'test/pizzabot'
 
-# Configurar cliente MQTT con WebSockets y TLS
-mqtt_client = mqtt.Client(transport="websockets")
 
-try:
-    mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
-    mqtt_client.loop_start()
-    print("✅ Conectado al broker MQTT con WebSockets")
-except Exception as e:
-    print("❌ Error al conectar al broker MQTT:", e)
 
 @app.route('/')
 def index():
@@ -25,11 +17,15 @@ def index():
 @app.route('/enviar', methods=['POST'])
 def enviar():
     mensaje = "Hola"
-    try:
-        mqtt_client.publish(MQTT_TOPIC, mensaje)
-        print("📨 Mensaje MQTT enviado:", mensaje)
-        client.loop_stop()
-        return 'OK'
+# Configurar cliente MQTT con WebSockets y TLS
+    mqtt_client = mqtt.Client(transport="websockets")
+    mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    mqtt_client.loop_start()
+    print("✅ Conectado al broker MQTT con WebSockets")
+    mqtt_client.publish(MQTT_TOPIC, mensaje)
+    print("📨 Mensaje MQTT enviado:", mensaje)
+    client.loop_stop()
+    return 'OK'
     except Exception as e:
         print("❌ Error al enviar mensaje MQTT:", e)
         return 'ERROR', 500
