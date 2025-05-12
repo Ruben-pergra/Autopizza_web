@@ -23,6 +23,7 @@ def on_connect(client, userdata, flags, rc):
         print(f"Error de conexión MQTT: {rc}")
 
 def on_message(client, userdata, msg):
+    global mensaje_recibido
     try:
         payload = json.loads(msg.payload.decode())
         if "msg" in payload and payload["msg"] == "leer":
