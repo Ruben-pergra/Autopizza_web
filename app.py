@@ -19,13 +19,25 @@ def enviar():
         mensaje = "Hola desde Flask con WebSocket TLS"
         mqtt_client = mqtt.Client(transport="websockets")
 
-        # Activar TLS para WebSockets seguros (puerto 8084)
         mqtt_client.tls_set(cert_reqs=ssl.CERT_NONE)
         mqtt_client.tls_insecure_set(True)
 
+        # Define on_connect callback
+        def on_connect(client, userdata, flags, rc):
+            if rc == 0:
+                print("Conectado correctamente")
+                client.publish(MQTT_TOPIC, mensaje)
+            else:
+                print(f"Falló la conexión: {rc}")
+
+        mqtt_client.on_connect = on_connect
+
         mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
         mqtt_client.loop_start()
-        mqtt_client.publish(MQTT_TOPIC, mensaje)
+
+        # Esperar brevemente para dar tiempo al publish (simple workaround)
+        import time
+        time.sleep(2)
         mqtt_client.loop_stop()
 
         return 'Mensaje enviado correctamente'
