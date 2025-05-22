@@ -1,24 +1,38 @@
-const broker = 'wss://broker.emqx.io:8084/mqtt';
-const topic = 'test/pizzabot';
+// Configuración del broker y topics
+const BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
+const TOPIC_DATOS       = 'recibir/datos';
+const TOPIC_CONFIRMACION = 'test/pizzabot'; // o pon aquí tu topic de confirmación
 
-const client = mqtt.connect(broker, {
+// Conectamos al broker
+const client = mqtt.connect(BROKER_URL, {
   reconnectPeriod: 1000
 });
 
-client.on('connect', function () {
-  console.log('Conectado al broker MQTT');
-  client.subscribe(topic, function (err) {
-    if (!err) {
-      console.log('Suscrito al topic:', topic);
-    }
+client.on('connect', () => {
+  console.log('→ Conectado al broker MQTT');
+  // Nos suscribimos a los topics que nos interesan
+  client.subscribe([ TOPIC_DATOS, TOPIC_CONFIRMACION ], err => {
+    if (!err) console.log('→ Suscrito a:', TOPIC_DATOS, TOPIC_CONFIRMACION);
   });
 });
 
-client.on('message', function (topic, message) {
-  const mensaje = message.toString();
-  console.log('Mensaje recibido:', mensaje);
-  const mensajesDiv = document.getElementById('mensajes');
-  const nuevo = document.createElement('p');
-  nuevo.textContent = mensaje;
-  mensajesDiv.appendChild(nuevo);
+client.on('message', (topic, message) => {
+  const msg = message.toString();
+  console.log(`← [${topic}] ${msg}`);
+
+  if (topic === TOPIC_DATOS) {
+    // Actualizamos solo el contador de pizzas hechas
+    // Suponemos que el payload es directamente el número o "pizzas_hechas: 12"
+    let valor = msg;
+    if (msg.includes(':')) {
+      valor = msg.split(':')[1].trim();
+    }
+    document.getElementById('pizzas_hechas').textContent = valor;
+  } else if (topic === TOPIC_CONFIRMACION) {
+    // Lo mostramos en el log de mensajes
+    const div = document.getElementById('mensajes');
+    const p   = document.createElement('p');
+    p.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    div.appendChild(p);
+  }
 });
