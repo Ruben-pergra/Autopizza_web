@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Configuración MQTT
 MQTT_BROKER = 'broker.emqx.io'
 MQTT_PORT   = 8084       # WebSocket TLS
-TOPIC_DATOS = 'recibir/datos'
+TOPIC_DATOS = 'test/pizzabot'
 
 @app.route('/')
 def index():
