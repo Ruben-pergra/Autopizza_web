@@ -2,26 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Autopizza Dashboard</title>
+  <title>Pedido de Pizza</title>
+  <!-- Carga la librería MQTT.js -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-  <!-- Nuestro script cliente MQTT -->
-  <script src="{{ url_for('static', filename='js/mqtt_client.js') }}"></script>
+  <!-- Carga tu script JS -->
+  <script src="{{ url_for('static', filename='js/mqtt_client.js') }}" defer></script>
 </head>
 <body>
-  <h1>Autopizza Dashboard</h1>
+  <h1>Haz tu pedido de pizza</h1>
 
-  <!-- Botón que envía un pedido -->
+  <!-- Botón que publica en MQTT -->
   <form action="/enviar" method="POST">
     <button type="submit">Enviar pedido</button>
   </form>
 
   <hr>
 
-  <!-- Línea que se actualizará en tiempo real -->
+  <!-- Contador que se actualizará en tiempo real -->
   <p>Pizzas hechas: <span id="pizzas_hechas">0</span></p>
-
-  <!-- Mensajes de confirmación u otros -->
-  <h2>Logs:</h2>
-  <div id="mensajes"></div>
 </body>
 </html>
