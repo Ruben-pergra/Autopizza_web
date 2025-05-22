@@ -1,7 +1,7 @@
 // Configuración del broker y topics
 const BROKER_URL = 'wss://broker.emqx.io:8084/mqtt';
 const TOPIC_DATOS       = 'recibir/datos';
-const TOPIC_CONFIRMACION = 'test/pizzabot'; // o pon aquí tu topic de confirmación
+const TOPIC_CONFIRMACION = 'mandar/qr';
 
 // Conectamos al broker
 const client = mqtt.connect(BROKER_URL, {
