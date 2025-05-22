@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 import paho.mqtt.client as mqtt
 import ssl
 
-app = Flask(_name_)
+app = Flask(__name__)
 
 # MQTT Config
 MQTT_BROKER = 'broker.emqx.io'
@@ -44,5 +44,5 @@ def enviar():
     except Exception as e:
         return f"Error: {str(e)}", 500
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     app.run(debug=True)
