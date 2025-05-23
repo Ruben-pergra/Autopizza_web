@@ -1,0 +1,110 @@
+:root {
+  --mustard: #f4b400;
+  --dark-gray: #333333;
+  --light-bg: #fefae0;
+}
+
+/* Fuentes globales */
+body {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Títulos principales - Cormorant Unicase */
+h1, h2, h3, h4, h5, h6,
+.font-unicase {
+  font-family: "Cormorant Unicase", serif;
+}
+
+/* Estilos para Cormorant Unicase */
+.unicase-light {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 300;
+}
+
+.unicase-regular {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 400;
+}
+
+.unicase-medium {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 500;
+}
+
+.unicase-semibold {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 600;
+}
+
+.unicase-bold {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 700;
+}
+
+/* Estilos para Cormorant Garamond */
+.garamond-light {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+}
+
+.garamond-regular {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+}
+
+.garamond-medium {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+}
+
+.garamond-semibold {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+}
+
+.garamond-bold {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 700;
+}
+
+.garamond-italic {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+}
+
+/* Ajustes específicos para elementos */
+nav a, .btn, button {
+  font-family: "Cormorant Unicase", serif; /* Mantenemos Unicase para navegación y botones */
+}
+
+/* Mejoramos el espaciado y legibilidad */
+p {
+  margin-bottom: 1.2rem;
+  font-size: 1.1rem;
+}
+
+/* Ajustes para el menú desplegable */
+#menu-dropdown a {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 500;
+}
+
+/* Estilos para el menú */
+model-viewer {
+  display: block !important; /* Fuerza el modelo a comportarse como bloque */
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Estilos.css */
+nav {
+  min-width: 280px; /* Ancho mínimo para evitar colapso */
+}
+
+@media (max-width: 360px) {
+  .truncate {
+    max-width: 120px; /* Limita el ancho del título */
+  }
+}

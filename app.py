@@ -13,6 +13,22 @@ TOPIC_DATOS = 'test/pizzabot'
 def index():
     return render_template('index.html')
 
+@app.route('/menu')
+def menu():
+    return render_template('menu.html')
+@app.route('/faq')
+def menu():
+    return render_template('faq.html')
+@app.route('/eventos')
+def menu():
+    return render_template('eventos.html')
+@app.route('/galeria')
+def menu():
+    return render_template('galeria.html')
+@app.route('/tecnologia')
+def menu():
+    return render_template('tecnologia.html')
+
 @app.route('/enviar', methods=['POST'])
 def enviar():
     # Publica un mensaje de pedido
