@@ -1,13 +1,14 @@
 from flask import Flask, request, render_template
 import paho.mqtt.client as mqtt
 import ssl
+import time
 
 app = Flask(__name__)
 
 # Configuración MQTT
 MQTT_BROKER = 'broker.emqx.io'
 MQTT_PORT   = 8084       # WebSocket TLS
-TOPIC_DATOS = 'test/pizzabot'
+MQTT_TOPIC = 'test/pizzabot'
 
 @app.route('/')
 def index():
@@ -31,13 +32,23 @@ def tecnologia():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
+    mensaje ="Pizza_bacon"
+    #probar con mensaje = request.form.get('pizza') y con client.publish(MQTT_TOPIC, payload=mensaje) si veo q tal
     # Publica un mensaje de pedido
     mqtt_client = mqtt.Client(transport="websockets")
     mqtt_client.tls_set(cert_reqs=ssl.CERT_NONE)
     mqtt_client.tls_insecure_set(True)
+            # Define on_connect callback
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Conectado correctamente")
+            client.publish(MQTT_TOPIC, mensaje)
+        else:
+            print(f"Falló la conexión: {rc}")
+    mqtt_client.on_connect = on_connect
     mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
     mqtt_client.loop_start()
-    mqtt_client.publish(TOPIC_DATOS, "pizzas_hechas: 1")  # Por ejemplo
+    time.sleep(0.5)
     mqtt_client.loop_stop()
     return 'Pedido enviado'
 
