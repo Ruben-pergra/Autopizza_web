@@ -32,6 +32,7 @@ def tecnologia():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
+    mensaje ="Pizza_bacon"
     # Publica un mensaje de pedido
     mqtt_client = mqtt.Client(transport="websockets")
     mqtt_client.tls_set(cert_reqs=ssl.CERT_NONE)
