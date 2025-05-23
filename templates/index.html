@@ -43,13 +43,17 @@
             </div>
           </div>
         </div>
-        <button id="login-btn" class="text-white bg-gray-700 hover:bg-gray-600 text-sm md:text-base font-semibold px-3 py-1 md:px-4 md:py-2 rounded whitespace-nowrap">
+
+        <!-- Botón de inicio de sesión -->
+        <button id="login-btn" class="text-white bg-gray-700 hover:bg-gray-600 text-xs px-2 py-1 md:text-base md:px-4 md:py-2 font-semibold rounded whitespace-nowrap">
           Iniciar Sesión
         </button>
+
+        <!-- Contenedor del usuario conectado -->
         <div id="user-container" class="relative hidden">
-          <span id="user-display" class="cursor-pointer text-2xl text-gray-700 font-bold"></span>
+          <span id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold"></span>
           <div id="logout-option" class="absolute right-0 mt-2 bg-white border border-gray-300 rounded shadow-md p-2 hidden">
-            <button id="logout-btn" class="text-gray-700 hover:text-red-500">Cerrar sesión</button>
+            <button id="logout-btn" class="text-gray-700 hover:text-red-500 text-sm md:text-base">Cerrar sesión</button>
           </div>
         </div>
       </div>
@@ -101,9 +105,9 @@
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">¿Quiénes somos?</h2>
         <div class="bg-white p-4 rounded-lg shadow-xl">
-          <div class="video-container">
+          <div class="video-container"> 
             <iframe 
-              src="https://www.youtube.com/embed/u7oc1SMZtwA?autoplay=1&mute=1&playsinline=1&loop=1&playlist=u7oc1SMZtwA" 
+              src="https://www.youtube.com/embed/u7oc1SMZtwA?playsinline=1" 
               title="Video de presentación"
               allow="autoplay; encrypted-media"
               allowfullscreen>
