@@ -76,22 +76,43 @@
 <!-- ========== CONTENIDO PRINCIPAL ========== -->
   <main class="pt-24 bg-yellow-100">
 
+    <style>
+      .video-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* Relación 16:9 */
+        height: 0;
+        overflow: hidden;
+        border-radius: 0.5rem; /* Equivalente a rounded-md */
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-xl */
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+    </style>
+
     <section class="py-8 px-6 md:px-12">
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">¿Quiénes somos?</h2>
-        <div class="rounded-lg overflow-hidden shadow-xl bg-white p-4 flex justify-center">
-          <div class="aspect-w-16 aspect-h-9 w-full max-w-xl">
+        <div class="bg-white p-4 rounded-lg shadow-xl">
+          <div class="video-container">
             <iframe 
-              src="https://www.youtube.com/watch?v=ehpgMsgnbIE" 
+              src="https://www.youtube.com/embed/u7oc1SMZtwA?autoplay=1&mute=1&playsinline=1&loop=1&playlist=u7oc1SMZtwA" 
               title="Video de presentación"
               allow="autoplay; encrypted-media"
-              allowfullscreen
-              class="w-full h-full rounded-md">
+              allowfullscreen>
             </iframe>
           </div>
         </div>
       </div>
     </section>
+
 
     <section class="py-8 px-6 md:px-12">
       <div class="max-w-6xl mx-auto">
