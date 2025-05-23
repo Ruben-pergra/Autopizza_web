@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Pedido de Pizza</title>
-  <!-- Carga la librería MQTT.js -->
+  <!-- MQTT.js por CDN -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
-  <!-- Carga tu script JS -->
-  <script src="{{ url_for('static', filename='js/mqtt_client.js') }}" defer></script>
+  <!-- Nuestro script, ahora directamente en static/ -->
+  <script src="{{ url_for('static', filename='mqtt_listener.js') }}" defer></script>
 </head>
 <body>
   <h1>Haz tu pedido de pizza</h1>
