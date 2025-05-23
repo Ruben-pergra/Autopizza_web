@@ -106,13 +106,7 @@
                 
               </div> 
             </div>
-          <form action="{{ url_for('enviar') }}" method="POST">
-            <input type="hidden" name="pizza" value="Pizza David (Queso)">
-            <button type="submit"
-                    class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-              Pedir Pizza
-            </button>
-          </form>
+          <button onclick="addToOrder('Pizza David (Queso)')" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Pedir Pizza</button>
         </div>
   
         <!-- Pizza de Bacon -->
