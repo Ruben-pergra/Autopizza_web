@@ -17,16 +17,16 @@ def index():
 def menu():
     return render_template('menu.html')
 @app.route('/faq')
-def menu():
+def faq():
     return render_template('faq.html')
 @app.route('/eventos')
-def menu():
+def eventos():
     return render_template('eventos.html')
 @app.route('/galeria')
-def menu():
+def galeria():
     return render_template('galeria.html')
 @app.route('/tecnologia')
-def menu():
+def tecnologia():
     return render_template('tecnologia.html')
 
 @app.route('/enviar', methods=['POST'])
