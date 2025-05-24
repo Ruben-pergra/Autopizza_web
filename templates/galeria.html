@@ -81,56 +81,86 @@
   <main class="pt-24 bg-yellow-100">
 
     <!-- ========== CONTENIDO ========== -->
-    <!-- Visor de modelos 3D con flechas -->
-    <div class="flex justify-center items-center gap-4 mt-8">
+    <!-- Título centrado -->
+    <h2 class="text-3xl font-bold text-center text-gray-800 mt-12 mb-6">Modelos 3D de Pizzas</h2>
+
+    <!-- Galería 3D con fondo blanco centrado -->
+    <div class="flex justify-center items-center gap-2 md:gap-6">
       <!-- Flecha izquierda -->
-      <button id="prevModel" class="text-3xl text-gray-700 hover:text-gray-900">
+      <button id="prevModel" class="text-2xl md:text-5xl text-gray-700 hover:text-gray-900">
         &#8592;
       </button>
 
-      <!-- Visor 3D -->
-      <model-viewer id="viewer"
-        src="{{ url_for('static', filename='modelos/modelo1.glb') }}"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        camera-controls
-        disable-zoom
-        auto-rotate
-        rotation-per-second="30deg"
-        tone-mapping="neutral"
-        poster="poster.webp"
-        shadow-intensity="1"
-        class="w-80 h-64">
-      </model-viewer>
+      <!-- Fondo blanco centrado que contiene el visor y el nombre -->
+      <div class="bg-white rounded-lg shadow-lg px-6 py-4 flex flex-col items-center">
+        <!-- Visor 3D -->
+        <model-viewer id="viewer"
+          src="{{ url_for('static', filename='modelos/modelo1.glb') }}"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          camera-controls
+          disable-zoom
+          auto-rotate
+          rotation-per-second="30deg"
+          tone-mapping="neutral"
+          poster="poster.webp"
+          shadow-intensity="1"
+          class="w-80 h-64">
+        </model-viewer>
+
+        <!-- Nombre del modelo -->
+        <p id="modelName" class="mt-4 text-lg font-semibold text-gray-800 text-center">
+          Pizza de Queso
+        </p>
+      </div>
 
       <!-- Flecha derecha -->
-      <button id="nextModel" class="text-3xl text-gray-700 hover:text-gray-900">
+      <button id="nextModel" class="text-2xl md:text-5xl text-gray-700 hover:text-gray-900">
         &#8594;
       </button>
     </div>
 
-    <!-- Script con rutas absolutas generadas por Flask -->
+    <!-- Script con rutas absolutas y nombres de modelos -->
     <script>
       const models = [
-        "{{ url_for('static', filename='modelos/modelo1.glb') }}",
-        "{{ url_for('static', filename='modelos/modelo2.glb') }}",
-        "{{ url_for('static', filename='modelos/modelo3.glb') }}",
-        "{{ url_for('static', filename='modelos/modelo4.glb') }}"
+        {
+          src: "{{ url_for('static', filename='modelos/modelo1.glb') }}",
+          name: "Pizza de Bacon"
+        },
+        {
+          src: "{{ url_for('static', filename='modelos/modelo2.glb') }}",
+          name: "Pizza de Queso"
+        },
+        {
+          src: "{{ url_for('static', filename='modelos/modelo3.glb') }}",
+          name: "Pizza de Champiñones"
+        },
+        {
+          src: "{{ url_for('static', filename='modelos/modelo4.glb') }}",
+          name: "Pizza de Pepperoni"
+        }
       ];
-      
+
       let currentModelIndex = 0;
       const viewer = document.getElementById('viewer');
+      const nameDisplay = document.getElementById('modelName');
+
+      function updateViewer() {
+        viewer.setAttribute('src', models[currentModelIndex].src);
+        nameDisplay.textContent = models[currentModelIndex].name;
+      }
 
       document.getElementById('nextModel').addEventListener('click', () => {
         currentModelIndex = (currentModelIndex + 1) % models.length;
-        viewer.setAttribute('src', models[currentModelIndex]);
+        updateViewer();
       });
 
       document.getElementById('prevModel').addEventListener('click', () => {
         currentModelIndex = (currentModelIndex - 1 + models.length) % models.length;
-        viewer.setAttribute('src', models[currentModelIndex]);
+        updateViewer();
       });
     </script>
+
 
 
     <!-- ========== Procesos ========== -->
