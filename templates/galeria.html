@@ -81,107 +81,159 @@
   <main class="pt-24 bg-yellow-100">
 
     <!-- ========== CONTENIDO ========== -->
-<!-- Título centrado -->
-<h2 class="text-3xl font-bold text-center text-gray-800 mt-12 mb-6">Modelos 3D de Pizzas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 mt-10">
+      <!-- Galería 1 -->
+      <div class="flex flex-col items-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Pizzas</h2>
+        <div class="flex items-center gap-4">
+          <button id="prev1" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
+            <model-viewer id="viewer1"
+              src="{{ url_for('static', filename='modelos/pizza_queso.glb') }}"
+              ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
+              tone-mapping="neutral" shadow-intensity="1"
+              class="w-64 h-52">
+            </model-viewer>
+            <p id="label1" class="mt-2 font-semibold text-gray-800 text-center">Pizza de Queso</p>
+          </div>
+          <button id="next1" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8594;</button>
+        </div>
+      </div>
 
-<!-- Galería 3D responsiva -->
-<div class="flex justify-center items-center gap-2 md:gap-6">
-  <!-- Flecha izquierda -->
-  <button id="prevModel" class="text-2xl md:text-5xl text-gray-700 hover:text-gray-900">
-    &#8592;
-  </button>
+      <!-- Galería 2 -->
+      <div class="flex flex-col items-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Ingredientes</h2>
+        <div class="flex items-center gap-4">
+          <button id="prev2" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
+            <model-viewer id="viewer2"
+              src="{{ url_for('static', filename='modelos/queso.glb') }}"
+              ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
+              tone-mapping="neutral" shadow-intensity="1"
+              class="w-64 h-52">
+            </model-viewer>
+            <p id="label2" class="mt-2 font-semibold text-gray-800 text-center">Queso crudo</p>
+          </div>
+          <button id="next2" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8594;</button>
+        </div>
+      </div>
 
-  <!-- Fondo blanco solo en pantallas md o más grandes -->
-  <div class="hidden md:flex flex-col items-center bg-white rounded-lg shadow-lg px-6 py-4">
-    <model-viewer id="viewer"
-      src="{{ url_for('static', filename='modelos/modelo1.glb') }}"
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      camera-controls
-      disable-zoom
-      auto-rotate
-      rotation-per-second="30deg"
-      tone-mapping="neutral"
-      poster="poster.webp"
-      shadow-intensity="1"
-      class="w-80 h-64">
-    </model-viewer>
-    <p id="modelName" class="mt-4 text-lg font-semibold text-gray-800 text-center">
-      Pizza de Queso
-    </p>
-  </div>
+      <!-- Galería 3 -->
+      <div class="flex flex-col items-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Herramientas Cocina</h2>
+        <div class="flex items-center gap-4">
+          <button id="prev3" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
+            <model-viewer id="viewer3"
+              src="{{ url_for('static', filename='ingredientes/queso.glb') }}"
+              ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
+              tone-mapping="neutral" shadow-intensity="1"
+              class="w-64 h-52">
+            </model-viewer>
+            <p id="label3" class="mt-2 font-semibold text-gray-800 text-center">Cuchillo corte</p>
+          </div>
+          <button id="next3" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8594;</button>
+        </div>
+      </div>
 
-  <!-- Visor sin fondo en pantallas pequeñas -->
-  <div class="block md:hidden flex flex-col items-center">
-    <model-viewer id="viewer-mobile"
-      src="{{ url_for('static', filename='modelos/modelo1.glb') }}"
-      ar
-      ar-modes="webxr scene-viewer quick-look"
-      camera-controls
-      disable-zoom
-      auto-rotate
-      rotation-per-second="30deg"
-      tone-mapping="neutral"
-      poster="poster.webp"
-      shadow-intensity="1"
-      class="w-60 h-48">
-    </model-viewer>
-    <p id="modelNameMobile" class="mt-2 text-base font-semibold text-gray-800 text-center">
-      Pizza de Queso
-    </p>
-  </div>
+      <!-- Galería 4 -->
+      <div class="flex flex-col items-center">
+        <h2 class="text-xl font-bold text-gray-800 mb-3">Objetos extras</h2>
+        <div class="flex items-center gap-4">
+          <button id="prev4" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
+            <model-viewer id="viewer4"
+              src="{{ url_for('static', filename='ingredientes/pepperoni.glb') }}"
+              ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
+              tone-mapping="neutral" shadow-intensity="1"
+              class="w-64 h-52">
+            </model-viewer>
+            <p id="label4" class="mt-2 font-semibold text-gray-800 text-center">Caja de la Pizza</p>
+          </div>
+          <button id="next4" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8594;</button>
+        </div>
+      </div>
+    </div>
 
-  <!-- Flecha derecha -->
-  <button id="nextModel" class="text-2xl md:text-5xl text-gray-700 hover:text-gray-900">
-    &#8594;
-  </button>
-</div>
 
 <!-- Script que actualiza ambos visores (desktop y móvil) -->
 <script>
-  const models = [
+  const galerias = [
     {
-      src: "{{ url_for('static', filename='modelos/modelo1.glb') }}",
-      name: "Pizza de Queso"
+      viewerId: 'viewer1',
+      labelId: 'label1',
+      models: [
+        { src: "{{ url_for('static', filename='modelos/pizza_queso.glb') }}", name: "Pizza de Queso" },
+        { src: "{{ url_for('static', filename='modelos/pizza_bacon.glb') }}", name: "Pizza de Bacon" },
+        { src: "{{ url_for('static', filename='modelos/pizza_pepperoni.glb') }}", name: "Pizza de Pepperoni" },
+        { src: "{{ url_for('static', filename='modelos/pizza_champis.glb') }}", name: "Pizza de Champiñones" }
+
+      ]
     },
     {
-      src: "{{ url_for('static', filename='modelos/modelo2.glb') }}",
-      name: "Pizza de Pepperoni"
+      viewerId: 'viewer2',
+      labelId: 'label2',
+      models: [
+        { src: "{{ url_for('static', filename='modelos/queso.glb') }}", name: "Queso" },
+        { src: "{{ url_for('static', filename='modelos/bacon.glb') }}", name: "Bacon" },
+        { src: "{{ url_for('static', filename='modelos/peperoni.glb') }}", name: "Pepperoni" },
+        { src: "{{ url_for('static', filename='modelos/champis.glb') }}", name: "Champiñones" },
+        { src: "{{ url_for('static', filename='modelos/masa.glb') }}", name: "Masa" }
+
+      ]
     },
     {
-      src: "{{ url_for('static', filename='modelos/modelo3.glb') }}",
-      name: "Pizza Hawaiana"
+      viewerId: 'viewer3',
+      labelId: 'label3',
+      models: [
+        { src: "{{ url_for('static', filename='modelos/cuchillo.glb') }}", name: "Cuchillo corte" },
+        { src: "{{ url_for('static', filename='modelos/cuchara.glb') }}", name: "Cuchara tomate" },
+        { src: "{{ url_for('static', filename='modelos/palapizza.glb') }}", name: "Pala de Pizzas" },
+        { src: "{{ url_for('static', filename='modelos/limpiador_cuchillo.glb') }}", name: "Limpiador del Cuchillo" },
+        { src: "{{ url_for('static', filename='modelos/horno.glb') }}", name: "Horno" },
+        { src: "{{ url_for('static', filename='modelos/dispensador.glb') }}", name: "Dispensador Ingredientes" },
+        { src: "{{ url_for('static', filename='modelos/dispensador_tomate.glb') }}", name: "Dispensador tomate" }
+
+      ]
     },
     {
-      src: "{{ url_for('static', filename='modelos/modelo4.glb') }}",
-      name: "Pizza Vegetariana"
+      viewerId: 'viewer4',
+      labelId: 'label4',
+      models: [
+        { src: "{{ url_for('static', filename='modelos/caja_pizza.glb') }}", name: "Caja de la pizza" },
+        { src: "{{ url_for('static', filename='modelos/cinta.glb') }}", name: "Cinta poligrado alimenticio" },
+        { src: "{{ url_for('static', filename='modelos/cinta_rodillos.glb') }}", name: "Cinta de Rodillos" },
+        { src: "{{ url_for('static', filename='modelos/mesa.glb') }}", name: "Mesa" },
+        { src: "{{ url_for('static', filename='modelos/salida_masas.glb') }}", name: "Salida de las Masas" },
+        { src: "{{ url_for('static', filename='modelos/soporte_robot.glb') }}", name: "Soporte para los Robots" },
+        { src: "{{ url_for('static', filename='modelos/soporte_cinta.glb') }}", name: "Soporte de Cintas" }
+
+
+      ]
     }
   ];
 
-  let currentModelIndex = 0;
-  const viewerDesktop = document.getElementById('viewer');
-  const viewerMobile = document.getElementById('viewer-mobile');
-  const nameDesktop = document.getElementById('modelName');
-  const nameMobile = document.getElementById('modelNameMobile');
+  galerias.forEach((galeria, i) => {
+    let index = 0;
+    const viewer = document.getElementById(galeria.viewerId);
+    const label = document.getElementById(galeria.labelId);
 
-  function updateViewer() {
-    const model = models[currentModelIndex];
-    if (viewerDesktop) viewerDesktop.setAttribute('src', model.src);
-    if (viewerMobile) viewerMobile.setAttribute('src', model.src);
-    if (nameDesktop) nameDesktop.textContent = model.name;
-    if (nameMobile) nameMobile.textContent = model.name;
-  }
+    function updateModel() {
+      viewer.setAttribute('src', galeria.models[index].src);
+      label.textContent = galeria.models[index].name;
+    }
 
-  document.getElementById('nextModel').addEventListener('click', () => {
-    currentModelIndex = (currentModelIndex + 1) % models.length;
-    updateViewer();
-  });
-
-  document.getElementById('prevModel').addEventListener('click', () => {
-    currentModelIndex = (currentModelIndex - 1 + models.length) % models.length;
-    updateViewer();
+    document.getElementById(`next${i+1}`).onclick = () => {
+      index = (index + 1) % galeria.models.length;
+      updateModel();
+    };
+    document.getElementById(`prev${i+1}`).onclick = () => {
+      index = (index - 1 + galeria.models.length) % galeria.models.length;
+      updateModel();
+    };
   });
 </script>
+
 
 
 
