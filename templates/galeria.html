@@ -92,7 +92,7 @@
       </button>
 
       <!-- Fondo blanco centrado que contiene el visor y el nombre -->
-      <div class="bg-white rounded-lg shadow-lg px-6 py-4 flex flex-col items-center">
+      <div class="hidden md:flex flex-col items-center bg-white rounded-lg shadow-lg px-6 py-4">
         <!-- Visor 3D -->
         <model-viewer id="viewer"
           src="{{ url_for('static', filename='modelos/modelo1.glb') }}"
@@ -120,34 +120,39 @@
       </button>
     </div>
 
-    <!-- Script con rutas absolutas y nombres de modelos -->
+    <!-- Script que actualiza ambos visores (desktop y móvil) -->
     <script>
       const models = [
         {
           src: "{{ url_for('static', filename='modelos/modelo1.glb') }}",
-          name: "Pizza de Bacon"
-        },
-        {
-          src: "{{ url_for('static', filename='modelos/modelo2.glb') }}",
           name: "Pizza de Queso"
         },
         {
+          src: "{{ url_for('static', filename='modelos/modelo2.glb') }}",
+          name: "Pizza de Pepperoni"
+        },
+        {
           src: "{{ url_for('static', filename='modelos/modelo3.glb') }}",
-          name: "Pizza de Champiñones"
+          name: "Pizza Hawaiana"
         },
         {
           src: "{{ url_for('static', filename='modelos/modelo4.glb') }}",
-          name: "Pizza de Pepperoni"
+          name: "Pizza Vegetariana"
         }
       ];
 
       let currentModelIndex = 0;
-      const viewer = document.getElementById('viewer');
-      const nameDisplay = document.getElementById('modelName');
+      const viewerDesktop = document.getElementById('viewer');
+      const viewerMobile = document.getElementById('viewer-mobile');
+      const nameDesktop = document.getElementById('modelName');
+      const nameMobile = document.getElementById('modelNameMobile');
 
       function updateViewer() {
-        viewer.setAttribute('src', models[currentModelIndex].src);
-        nameDisplay.textContent = models[currentModelIndex].name;
+        const model = models[currentModelIndex];
+        if (viewerDesktop) viewerDesktop.setAttribute('src', model.src);
+        if (viewerMobile) viewerMobile.setAttribute('src', model.src);
+        if (nameDesktop) nameDesktop.textContent = model.name;
+        if (nameMobile) nameMobile.textContent = model.name;
       }
 
       document.getElementById('nextModel').addEventListener('click', () => {
@@ -160,7 +165,6 @@
         updateViewer();
       });
     </script>
-
 
 
     <!-- ========== Procesos ========== -->
