@@ -81,14 +81,14 @@
   <main class="pt-24 bg-yellow-100">
 
     <!-- ========== CONTENIDO ========== -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 mt-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 px-4 md:px-8 lg:px-16 xl:px-24 mt-10">
       <!-- Galería 1 -->
       <div class="flex flex-col items-center">
         <h2 class="text-xl font-bold text-gray-800 mb-3">Pizzas</h2>
         <div class="flex items-center gap-4">
           <button id="prev1" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
-          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
-            <model-viewer id="viewer1"
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3 w-72 md:w-96 lg:w-[30rem]">
+            <model-viewer id="viewer1" class="w-64 h-52 md:w-80 md:h-60 lg:w-[24rem] lg:h-[20rem]"
               src="{{ url_for('static', filename='modelos/pizza_queso.glb') }}"
               ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
               tone-mapping="neutral" shadow-intensity="1"
@@ -105,8 +105,8 @@
         <h2 class="text-xl font-bold text-gray-800 mb-3">Ingredientes</h2>
         <div class="flex items-center gap-4">
           <button id="prev2" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
-          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
-            <model-viewer id="viewer2"
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3 w-72 md:w-96 lg:w-[30rem]">
+            <model-viewer id="viewer2" class="w-64 h-52 md:w-80 md:h-60 lg:w-[24rem] lg:h-[20rem]"
               src="{{ url_for('static', filename='modelos/queso.glb') }}"
               ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
               tone-mapping="neutral" shadow-intensity="1"
@@ -123,8 +123,8 @@
         <h2 class="text-xl font-bold text-gray-800 mb-3">Herramientas Cocina</h2>
         <div class="flex items-center gap-4">
           <button id="prev3" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
-          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
-            <model-viewer id="viewer3"
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3 w-72 md:w-96 lg:w-[30rem]">
+            <model-viewer id="viewer3" class="w-64 h-52 md:w-80 md:h-60 lg:w-[24rem] lg:h-[20rem]"
               src="{{ url_for('static', filename='ingredientes/queso.glb') }}"
               ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
               tone-mapping="neutral" shadow-intensity="1"
@@ -141,8 +141,8 @@
         <h2 class="text-xl font-bold text-gray-800 mb-3">Objetos extras</h2>
         <div class="flex items-center gap-4">
           <button id="prev4" class="text-2xl md:text-4xl text-gray-700 hover:text-gray-900">&#8592;</button>
-          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3">
-            <model-viewer id="viewer4"
+          <div class="flex flex-col items-center bg-white rounded-lg shadow-lg px-4 py-3 w-72 md:w-96 lg:w-[30rem]">
+            <model-viewer id="viewer4" class="w-64 h-52 md:w-80 md:h-60 lg:w-[24rem] lg:h-[20rem]"
               src="{{ url_for('static', filename='ingredientes/pepperoni.glb') }}"
               ar ar-modes="webxr scene-viewer quick-look" camera-controls auto-rotate disable-zoom rotation-per-second="30deg"
               tone-mapping="neutral" shadow-intensity="1"
@@ -176,7 +176,7 @@
       models: [
         { src: "{{ url_for('static', filename='modelos/queso.glb') }}", name: "Queso" },
         { src: "{{ url_for('static', filename='modelos/bacon.glb') }}", name: "Bacon" },
-        { src: "{{ url_for('static', filename='modelos/peperoni.glb') }}", name: "Pepperoni" },
+        { src: "{{ url_for('static', filename='modelos/pepperoni.glb') }}", name: "Pepperoni" },
         { src: "{{ url_for('static', filename='modelos/champis.glb') }}", name: "Champiñones" },
         { src: "{{ url_for('static', filename='modelos/masa.glb') }}", name: "Masa" }
 
@@ -201,12 +201,13 @@
       labelId: 'label4',
       models: [
         { src: "{{ url_for('static', filename='modelos/caja_pizza.glb') }}", name: "Caja de la pizza" },
-        { src: "{{ url_for('static', filename='modelos/cinta.glb') }}", name: "Cinta poligrado alimenticio" },
+        { src: "{{ url_for('static', filename='modelos/cinta.glb') }}", name: "Cinta grado alimenticio" },
+        { src: "{{ url_for('static', filename='modelos/cinta_curva.glb') }}", name: "Cinta curva grado alimenticio" },
         { src: "{{ url_for('static', filename='modelos/cinta_rodillos.glb') }}", name: "Cinta de Rodillos" },
         { src: "{{ url_for('static', filename='modelos/mesa.glb') }}", name: "Mesa" },
         { src: "{{ url_for('static', filename='modelos/salida_masas.glb') }}", name: "Salida de las Masas" },
         { src: "{{ url_for('static', filename='modelos/soporte_robot.glb') }}", name: "Soporte para los Robots" },
-        { src: "{{ url_for('static', filename='modelos/soporte_cinta.glb') }}", name: "Soporte de Cintas" }
+        { src: "{{ url_for('static', filename='modelos/soportes_cinta.glb') }}", name: "Soportes de Cintas" }
 
 
       ]
