@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AutoPizza</title>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Cormorant+Unicase&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Cormorant+Unicase&display=swap" rel="stylesheet"/>
 
   <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 
   <!-- Hoja de estilos personalizada -->
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+
+  <!-- model-viewer para los modelos 3D -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <!-- QRCode Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <!-- MQTT.js -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 
 <body class="bg-yellow-400 text-gray-800">
@@ -50,15 +58,21 @@
 
         <!-- Contenedor del usuario conectado -->
         <div id="user-container" class="relative hidden">
-          <span id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold"></span>
-          <div id="logout-option" class="absolute right-0 mt-2 bg-white border border-gray-300 rounded shadow-md p-2 hidden">
-            <button id="logout-btn" class="text-gray-700 hover:text-red-500 text-sm md:text-base">Cerrar sesión</button>
+          <button id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold">
+            <span id="username-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold"></span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="user-dropdown" class="absolute right-0 mt-2 bg-white border border-gray-300 rounded shadow-md p-2 hidden">
+            <div class="py-1">
+              <button id="logout-btn" class="text-gray-700 hover:text-red-500 text-sm md:text-base">Cerrar sesión</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </nav>
-
   
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
   <main class="pt-24 bg-yellow-100">
