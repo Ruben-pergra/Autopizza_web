@@ -60,9 +60,6 @@
         <div id="user-container" class="relative hidden">
           <button id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold">
             <span id="username-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold"></span>
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
           </button>
           <div id="user-dropdown" class="absolute right-0 mt-2 bg-white border border-gray-300 rounded shadow-md p-2 hidden">
             <div class="py-1">
@@ -73,7 +70,7 @@
       </div>
     </div>
   </nav>
-  
+
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
   <main class="pt-24 bg-yellow-100">
 
@@ -310,6 +307,28 @@
       document.getElementById("login-modal").classList.add("hidden");
     });
 
+    // Función para publicar usuario por MQTT - VERSIÓN CORREGIDA
+    function publicarUsuarioMQTT(usuario, password) {
+      // Asegurarnos de que no haya espacios ni caracteres extraños
+      const usuarioLimpio = usuario.trim().replace(/\s+/g, '');
+      const passwordLimpia = password.trim().replace(/\s+/g, '');
+      
+      const mensaje = `${usuarioLimpio}:${passwordLimpia}`;
+      
+      // Verificar conexión MQTT antes de publicar
+      if (mqttClient.connected) {
+        mqttClient.publish(TOPIC_USUARIO, mensaje, { qos: 1 }, (err) => {
+          if (err) {
+            console.error("Error al publicar usuario:", err);
+          } else {
+            console.log("Usuario publicado correctamente:", mensaje);
+          }
+        });
+      } else {
+        console.error("No hay conexión MQTT para publicar usuario");
+      }
+    }
+
     // Procesar login
     document.getElementById("login-form").addEventListener("submit", function (e) {
       e.preventDefault();
@@ -350,28 +369,6 @@
       document.getElementById("user-dropdown").classList.add("hidden");
       document.getElementById("login-btn").classList.remove("hidden");
     });
-
-    // Función para publicar usuario por MQTT - VERSIÓN CORREGIDA
-    function publicarUsuarioMQTT(usuario, password) {
-      // Asegurarnos de que no haya espacios ni caracteres extraños
-      const usuarioLimpio = usuario.trim().replace(/\s+/g, '');
-      const passwordLimpia = password.trim().replace(/\s+/g, '');
-      
-      const mensaje = `${usuarioLimpio}:${passwordLimpia}`;
-      
-      // Verificar conexión MQTT antes de publicar
-      if (mqttClient.connected) {
-        mqttClient.publish(TOPIC_USUARIO, mensaje, { qos: 1 }, (err) => {
-          if (err) {
-            console.error("Error al publicar usuario:", err);
-          } else {
-            console.log("Usuario publicado correctamente:", mensaje);
-          }
-        });
-      } else {
-        console.error("No hay conexión MQTT para publicar usuario");
-      }
-    }
 
     // Función para publicar pedido por MQTT - VERSIÓN CORREGIDA
     function publicarPedidoMQTT(pizza) {
