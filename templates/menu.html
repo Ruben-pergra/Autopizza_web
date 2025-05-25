@@ -375,10 +375,6 @@
 
     // Función para publicar pedido por MQTT - VERSIÓN CORREGIDA
     function publicarPedidoMQTT(pizza) {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      currentUser = username || "usuario";
-      password = passwordCorrecta;
       if (!isLoggedIn) return;
       
       // Extraer el nombre correcto de la pizza
@@ -397,9 +393,6 @@
         // Fallback por si acaso
         nombrePizza = pizza.split(' ')[1] || "desconocida";
       }
-
-      // Publicar usuario conectado
-      publicarUsuarioMQTT(currentUser, passwordCorrecta);
       
       const mensaje = `Pizza_${nombrePizza}`;
       mqttClient.publish(TOPIC_PEDIDOS, mensaje);
