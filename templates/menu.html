@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AutoPizza</title>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Cormorant+Unicase&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&family=Cormorant+Unicase&display=swap" rel="stylesheet"/>
 
   <!-- Tailwind CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
 
   <!-- Hoja de estilos personalizada -->
   <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+
+  <!-- model-viewer para los modelos 3D -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <!-- QRCode Generator -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 
 <body class="bg-yellow-400 text-gray-800">
@@ -58,23 +64,6 @@
       </div>
     </div>
   </nav>
-
-  <!-- ========== Modal de Login ========== -->
-  <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white p-8 rounded shadow-md w-96">
-      <h2 class="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h2>
-      <form id="login-form">
-        <label class="block mb-2 font-medium">Usuario</label>
-        <input id="username" type="text" class="w-full mb-4 px-3 py-2 border border-gray-300 rounded" required>
-        <label class="block mb-2 font-medium">Contraseña</label>
-        <input type="password" class="w-full mb-6 px-3 py-2 border border-gray-300 rounded" required>
-        <div class="flex justify-between">
-          <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-white hover:text-gray-700 border border-gray-700">Entrar</button>
-          <button type="button" id="close-modal" class="text-gray-700 px-4 py-2 rounded border border-gray-300 hover:bg-gray-100">Cancelar</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
@@ -187,11 +176,38 @@
               </div>
             </div>
           <button onclick="addToOrder('Pizza Rubén (Pepperoni)')" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Pedir Pizza</button>
-        </div>
+          </div>
   
       </div>
     </div>
   </section>
+
+  <!-- ========== Modal de Login ========== -->
+  <div id="login-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-bold mb-4 text-center">Iniciar Sesión</h2>
+      <form id="login-form">
+        <label class="block mb-2 font-medium">Usuario</label>
+        <input id="username" type="text" class="w-full mb-4 px-3 py-2 border border-gray-300 rounded" required>
+        <label class="block mb-2 font-medium">Contraseña</label>
+        <input id="password" type="password" class="w-full mb-6 px-3 py-2 border border-gray-300 rounded" required>
+        <div class="text-red-600 text-sm mb-4 hidden" id="login-error">Contraseña incorrecta</div>
+        <div class="flex justify-between">
+          <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-white hover:text-gray-700 border border-gray-700">Entrar</button>
+          <button type="button" id="close-modal" class="text-gray-700 px-4 py-2 rounded border border-gray-300 hover:bg-gray-100">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+    <!-- ========== QR y Pedido recibido ========== -->
+  <div id="pedido-confirmado" class="fixed inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded shadow-lg text-center">
+      <h2 class="text-xl font-bold mb-2">Pedido enviado</h2>
+      <canvas id="qr-code" class="mx-auto mb-4"></canvas>
+      <button id="confirmar-btn" disabled class="bg-gray-500 text-white px-4 py-2 rounded opacity-50">Pedido recibido</button>
+    </div>
+  </div>
   
   <!-- MI PEDIDO -->
    <!--
@@ -282,5 +298,85 @@
   </footer>
   <script src="{{ url_for('static', filename='main.js') }}"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<script>
+    let isLoggedIn = false;
+    let currentUser = '';
+    const passwordCorrecta = "autopizza2025";
+
+    // Mostrar login modal
+    document.getElementById("login-btn").addEventListener("click", () => {
+      document.getElementById("login-modal").classList.remove("hidden");
+      document.getElementById("login-error").classList.add("hidden");
+    });
+
+    // Cerrar modal
+    document.getElementById("close-modal").addEventListener("click", () => {
+      document.getElementById("login-modal").classList.add("hidden");
+    });
+
+    // Procesar login
+    document.getElementById("login-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (password === passwordCorrecta) {
+        isLoggedIn = true;
+        currentUser = username || "usuario";
+        document.getElementById("login-modal").classList.add("hidden");
+        document.getElementById("user-display").textContent = currentUser;
+        document.getElementById("user-container").classList.remove("hidden");
+        document.getElementById("login-btn").classList.add("hidden");
+      } else {
+        document.getElementById("login-error").classList.remove("hidden");
+      }
+    });
+
+    // Mostrar opción de cerrar sesión
+    document.getElementById("user-display").addEventListener("click", () => {
+      document.getElementById("logout-option").classList.toggle("hidden");
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      isLoggedIn = false;
+      currentUser = '';
+      document.getElementById("user-container").classList.add("hidden");
+      document.getElementById("logout-option").classList.add("hidden");
+      document.getElementById("login-btn").classList.remove("hidden");
+    });
+
+    // Función que simula pedir una pizza (modificada)
+    function addToOrder(pizzaName) {
+      if (!isLoggedIn) {
+        document.getElementById("login-modal").classList.remove("hidden");
+        return;
+      }
+
+      console.log("Mensaje MQTT simulado: Pedido de", pizzaName, "por", currentUser);
+
+      // Mostrar QR con nombre del usuario
+      const qrCanvas = document.getElementById("qr-code");
+      QRCode.toCanvas(qrCanvas, `Pedido de ${pizzaName} por ${currentUser}`, function (error) {
+        if (error) console.error(error);
+        document.getElementById("pedido-confirmado").classList.remove("hidden");
+        const btn = document.getElementById("confirmar-btn");
+        btn.disabled = true;
+        btn.classList.add("opacity-50", "bg-gray-500");
+        btn.classList.remove("bg-yellow-600");
+
+        // Activar botón tras 5 segundos
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.classList.remove("opacity-50", "bg-gray-500");
+          btn.classList.add("bg-yellow-600", "hover:bg-yellow-700");
+        }, 5000);
+      });
+    }
+
+    // Cerrar QR
+    document.getElementById("confirmar-btn").addEventListener("click", () => {
+      document.getElementById("pedido-confirmado").classList.add("hidden");
+    });
+  </script>
 </body>
 </html>
