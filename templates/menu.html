@@ -58,7 +58,7 @@
 
         <!-- Contenedor del usuario conectado -->
         <div id="user-container" class="relative hidden">
-          <button id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold">
+          <button id="user-display" class="cursor-pointer text-gray-700 hover:text-yellow-500 font-semibold flex items-center text-sm md:text-lg whitespace-nowrap">
             <span id="username-display"></span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -66,7 +66,7 @@
           </button>
           <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 hidden">
             <div class="py-1">
-              <button id="logout-btn" class="text-gray-700 hover:text-red-500 text-sm md:text-base">Cerrar sesión</button>
+              <button id="logout-btn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-600">Cerrar sesión</button>
             </div>
           </div>
         </div>
@@ -310,13 +310,6 @@
     document.getElementById("close-modal").addEventListener("click", () => {
       document.getElementById("login-modal").classList.add("hidden");
     });
-    
-    // Función para publicar usuario por MQTT
-    function publicarUsuarioMQTT(usuario, password) {
-      const mensaje = `${usuario}:${password}`;
-      mqttClient.publish(TOPIC_USUARIO, mensaje);
-      console.log("Usuario publicado:", mensaje);
-    }
 
     // Procesar login
     document.getElementById("login-form").addEventListener("submit", function (e) {
@@ -359,30 +352,42 @@
       document.getElementById("login-btn").classList.remove("hidden");
     });
 
+    // Función para publicar usuario por MQTT - VERSIÓN CORREGIDA
+    function publicarUsuarioMQTT(usuario, password) {
+      // Asegurarnos de que no haya espacios ni caracteres extraños
+      const usuarioLimpio = usuario.trim().replace(/\s+/g, '');
+      const passwordLimpia = password.trim().replace(/\s+/g, '');
+      
+      const mensaje = `${usuarioLimpio}:${passwordLimpia}`;
+      
+      // Verificar conexión MQTT antes de publicar
+      if (mqttClient.connected) {
+        mqttClient.publish(TOPIC_USUARIO, mensaje, { qos: 1 }, (err) => {
+          if (err) {
+            console.error("Error al publicar usuario:", err);
+          } else {
+            console.log("Usuario publicado correctamente:", mensaje);
+          }
+        });
+      } else {
+        console.error("No hay conexión MQTT para publicar usuario");
+      }
+    }
 
-
-    // Función para publicar pedido por MQTT - VERSIÓN CORREGIDA
+    // Función para publicar pedido por MQTT
     function publicarPedidoMQTT(pizza) {
       if (!isLoggedIn) return;
       
-      // Extraer el nombre correcto de la pizza
-      let nombrePizza;
+      // Extraer solo el nombre de la pizza (ej: "Pizza Rubén (Pepperoni)" -> "pizza_Ruben")
+      const nombrePizza = pizza.toLowerCase()
+        .replace(/[^a-záéíóúñü\s]/gi, '')  // Eliminar caracteres especiales
+        .replace(/\s+/g, '_')              // Reemplazar espacios con _
+        .replace(/[áéíóú]/g, letra => {
+          const acentos = {'á':'a','é':'e','í':'i','ó':'o','ú':'u'};
+          return acentos[letra] || letra;
+        });
       
-      // Casos específicos para cada pizza
-      if (pizza.includes("Rubén")) {
-        nombrePizza = "Ruben";
-      } else if (pizza.includes("David")) {
-        nombrePizza = "David";
-      } else if (pizza.includes("Ricardo")) {
-        nombrePizza = "Ricardo";
-      } else if (pizza.includes("Jordi")) {
-        nombrePizza = "Jordi";
-      } else {
-        // Fallback por si acaso
-        nombrePizza = pizza.split(' ')[1] || "desconocida";
-      }
-      
-      const mensaje = `pizza_${nombrePizza}`;
+      const mensaje = `pizza_${nombrePizza.split(' ')[1]}`; // Formato: pizza_Ruben, pizza_David, etc.
       mqttClient.publish(TOPIC_PEDIDOS, mensaje);
       console.log("Pedido publicado:", mensaje);
       
@@ -429,7 +434,7 @@
 
       // Mostrar QR con nombre del usuario y pizza
       const qrCanvas = document.getElementById("qr-code");
-      const qrData = `${currentUser}`;
+      const qrData = `${currentUser}: ${pizzaName}\n${new Date().toLocaleString()}`;
       
       // Tamaño responsive del QR
       const qrSize = window.innerWidth < 768 ? 300 : 400;
