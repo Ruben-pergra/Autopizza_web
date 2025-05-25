@@ -58,15 +58,15 @@
 
         <!-- Contenedor del usuario conectado -->
         <div id="user-container" class="relative hidden">
-          <button id="user-display" class="cursor-pointer text-gray-700 hover:text-yellow-500 font-semibold flex items-center text-sm md:text-lg whitespace-nowrap">
-            <span id="username-display" style="text-transform: none;"></span>
+          <button id="user-display" class="cursor-pointer md:text-2xl text-gray-700 hover:text-yellow-500 font-semibold flex items-center text-sm md:text-lg whitespace-nowrap">
+            <span id="username-display" class="cursor-pointer md:text-2xl text-gray-700 hover:text-yellow-500 font-semibold flex items-center text-sm md:text-lg whitespace-nowrap" style="text-transform: none;"></span>
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </button>
           <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 hidden">
             <div class="py-1">
-              <button id="logout-btn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-600">Cerrar sesión</button>
+              <button id="logout-btn" class="block w-full text-left px-4 py-2 text-gray-700 hover:text-red-600">Cerrar sesión</button>
             </div>
           </div>
         </div>
@@ -394,7 +394,7 @@
         nombrePizza = pizza.split(' ')[1] || "desconocida";
       }
       
-      const mensaje = `pizza_${nombrePizza}`;
+      const mensaje = `Pizza_${nombrePizza}`;
       mqttClient.publish(TOPIC_PEDIDOS, mensaje);
       console.log("Pedido publicado:", mensaje);
       
