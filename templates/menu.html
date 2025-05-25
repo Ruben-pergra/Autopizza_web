@@ -21,6 +21,8 @@
 
   <!-- QRCode Generator -->
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+  <!-- MQTT.js -->
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 </head>
 
 <body class="bg-yellow-400 text-gray-800">
@@ -56,9 +58,16 @@
 
         <!-- Contenedor del usuario conectado -->
         <div id="user-container" class="relative hidden">
-          <span id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold"></span>
-          <div id="logout-option" class="absolute right-0 mt-2 bg-white border border-gray-300 rounded shadow-md p-2 hidden">
-            <button id="logout-btn" class="text-gray-700 hover:text-red-500 text-sm md:text-base">Cerrar sesión</button>
+          <button id="user-display" class="cursor-pointer text-base md:text-2xl text-gray-700 font-bold flex items-center">
+            <span id="username-display"></span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 hidden">
+            <div class="py-1">
+              <button id="logout-btn" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-yellow-50 hover:text-yellow-600">Cerrar sesión</button>
+            </div>
           </div>
         </div>
       </div>
@@ -303,6 +312,12 @@
     let currentUser = '';
     const passwordCorrecta = "autopizza2025";
 
+    // MQTT Setup
+    const mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
+    const TOPIC1 = "UPV/PR2/2-08/web/usuario";
+    const TOPIC2 = "UPV/PR2/2-08/web/pedidos";
+
+
     // Mostrar login modal
     document.getElementById("login-btn").addEventListener("click", () => {
       document.getElementById("login-modal").classList.remove("hidden");
@@ -324,7 +339,7 @@
         isLoggedIn = true;
         currentUser = username || "usuario";
         document.getElementById("login-modal").classList.add("hidden");
-        document.getElementById("user-display").textContent = currentUser;
+        document.getElementById("username-display").textContent = currentUser;
         document.getElementById("user-container").classList.remove("hidden");
         document.getElementById("login-btn").classList.add("hidden");
       } else {
@@ -332,31 +347,58 @@
       }
     });
 
-    // Mostrar opción de cerrar sesión
-    document.getElementById("user-display").addEventListener("click", () => {
-      document.getElementById("logout-option").classList.toggle("hidden");
+    // Mostrar/ocultar menú desplegable del usuario
+    document.getElementById("user-display").addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.getElementById("user-dropdown").classList.toggle("hidden");
     });
 
+    // Cerrar menú desplegable al hacer clic fuera
+    document.addEventListener("click", () => {
+      document.getElementById("user-dropdown").classList.add("hidden");
+    });
+
+    // Cerrar sesión
     document.getElementById("logout-btn").addEventListener("click", () => {
       isLoggedIn = false;
       currentUser = '';
       document.getElementById("user-container").classList.add("hidden");
-      document.getElementById("logout-option").classList.add("hidden");
+      document.getElementById("user-dropdown").classList.add("hidden");
       document.getElementById("login-btn").classList.remove("hidden");
     });
 
-    // Función que simula pedir una pizza (modificada)
+    // Función para publicar pedido por MQTT
+    function publicarPedidoMQTT(pizza) {
+      if (!isLoggedIn) return;
+      
+      const mensaje1 = JSON.stringify({
+        usuario: currentUser,
+        contraseña: passwordCorrecta
+      });
+
+      const mensaje2 = JSON.stringify({
+        pizza: pizza,
+        fecha: new Date().toISOString()
+      });
+      
+      mqttClient.publish(TOPIC1, mensaje1);
+      mqttClient.publish(TOPIC2, mensaje2);
+
+    }
+
+    // Función que simula pedir una pizza
     function addToOrder(pizzaName) {
       if (!isLoggedIn) {
         document.getElementById("login-modal").classList.remove("hidden");
         return;
       }
 
-      console.log("Mensaje MQTT simulado: Pedido de", pizzaName, "por", currentUser);
+      // Publicar el pedido por MQTT
+      publicarPedidoMQTT(pizzaName);
 
       // Mostrar QR con nombre del usuario
       const qrCanvas = document.getElementById("qr-code");
-      QRCode.toCanvas(qrCanvas, `Pedido de ${pizzaName} por ${currentUser}`, function (error) {
+      QRCode.toCanvas(qrCanvas, `${currentUser}: ${pizzaName}`, function (error) {
         if (error) console.error(error);
         document.getElementById("pedido-confirmado").classList.remove("hidden");
         const btn = document.getElementById("confirmar-btn");
@@ -376,6 +418,15 @@
     // Cerrar QR
     document.getElementById("confirmar-btn").addEventListener("click", () => {
       document.getElementById("pedido-confirmado").classList.add("hidden");
+    });
+
+    // Manejar conexión MQTT
+    mqttClient.on("connect", () => {
+      console.log("Conectado al broker MQTT");
+    });
+
+    mqttClient.on("error", (err) => {
+      console.error("Error MQTT:", err);
     });
   </script>
 </body>
