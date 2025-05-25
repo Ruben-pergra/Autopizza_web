@@ -211,51 +211,32 @@
 
     <!-- ========== QR y Pedido recibido ========== -->
   <div id="pedido-confirmado" class="fixed inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center hidden z-50">
-    <div class="bg-white p-6 rounded shadow-lg text-center">
-      <h2 class="text-xl font-bold mb-2">Pedido enviado</h2>
-      <canvas id="qr-code" width="300" height="300" class="mx-auto mb-4"></canvas>      
-      <button id="confirmar-btn" disabled class="bg-gray-500 text-white px-4 py-2 rounded opacity-50">Pedido recibido</button>
+    <div class="bg-white p-6 rounded shadow-lg text-center max-w-md w-full">
+      <h2 class="text-2xl font-bold mb-4">Pedido enviado</h2>
+      <canvas id="qr-code" width="400" height="400" class="mx-auto mb-6 w-full max-w-[400px] h-auto"></canvas>
+      <button id="confirmar-btn" disabled class="bg-gray-500 text-white px-6 py-3 rounded-lg opacity-50 text-lg">Pedido recibido</button>
     </div>
   </div>
   
   <!-- MI PEDIDO -->
-   <!--
   <section id="pedido" class="bg-white py-16 px-6 md:px-12">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mi Pedido</h2>
-      <ul id="pedido-lista" class="text-gray-700 text-lg space-y-2 text-center"></ul>
+      <ul id="pedido-lista" class="text-gray-700 text-lg space-y-3">
+        <!-- Los pedidos aparecerán aquí -->
+      </ul>
     </div>
   </section>
-  
-  <script>
-    const pedido = [];
-  
-    function addToOrder(pizza) {
-      pedido.push(pizza);
-      renderPedido();
-    }
-  
-    function renderPedido() {
-      const lista = document.getElementById("pedido-lista");
-      lista.innerHTML = "";
-      pedido.forEach((pizza, index) => {
-        const item = document.createElement("li");
-        item.textContent = `${index + 1}. ${pizza}`;
-        lista.appendChild(item);
-      });
-    }
-  </script>
-  -->
 
  <!-- ========== FOOTER ========== -->
-<footer class="bg-gray-800 text-white py-8 px-4 md:py-12 md:px-12"> <!-- Padding reducido en móviles -->
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"> <!-- 1 columna en móviles -->
+<footer class="bg-gray-800 text-white py-8 px-4 md:py-12 md:px-12">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
       <!-- Columna 1: Información -->
     <div class="text-center md:text-left">
         <h3 class="text-xl md:text-2xl font-bold mb-3 text-yellow-400">AutoPizza</h3>
         <p class="mb-4 text-sm md:text-base">La revolución en la preparación de pizzas mediante robótica colaborativa.</p>
 
-        <!-- Iconos sociales (centrados en móviles) -->
+        <!-- Iconos sociales -->
         <div class="flex justify-center md:justify-start space-x-4">          
           <a href="#" class="text-white hover:text-yellow-400 transition-colors">
             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -311,12 +292,12 @@
     let isLoggedIn = false;
     let currentUser = '';
     const passwordCorrecta = "autopizza2025";
+    const pedidos = [];
 
     // MQTT Setup
     const mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
-    const TOPIC1 = "UPV/PR2/2-08/web/usuario";
-    const TOPIC2 = "UPV/PR2/2-08/web/pedidos";
-
+    const TOPIC_USUARIO = "UPV/PR2/2-08/web/usuario";
+    const TOPIC_PEDIDOS = "UPV/PR2/2-08/web/pedidos";
 
     // Mostrar login modal
     document.getElementById("login-btn").addEventListener("click", () => {
@@ -342,6 +323,9 @@
         document.getElementById("username-display").textContent = currentUser;
         document.getElementById("user-container").classList.remove("hidden");
         document.getElementById("login-btn").classList.add("hidden");
+        
+        // Publicar usuario conectado
+        publicarUsuarioMQTT(currentUser);
       } else {
         document.getElementById("login-error").classList.remove("hidden");
       }
@@ -367,21 +351,54 @@
       document.getElementById("login-btn").classList.remove("hidden");
     });
 
+    // Función para publicar usuario por MQTT
+    function publicarUsuarioMQTT(usuario) {
+      const mensaje = JSON.stringify({
+        usuario: usuario, passwordCorrecta
+      });
+      
+      mqttClient.publish(TOPIC_USUARIO, mensaje);
+    }
+
     // Función para publicar pedido por MQTT
     function publicarPedidoMQTT(pizza) {
       if (!isLoggedIn) return;
       
-      const mensaje1 = JSON.stringify({
-        currentUser : passwordCorrecta
-      });
-
-      const mensaje2 = JSON.stringify({
-      pizza,
-      });
+      const pedido = {
+      pizza
+      };
       
-      mqttClient.publish(TOPIC1, mensaje1);
-      mqttClient.publish(TOPIC2, mensaje2);
+      mqttClient.publish(TOPIC_PEDIDOS, JSON.stringify(pedido));
+      
+      // Añadir a historial de pedidos
+      agregarPedidoALista(pizza);
+    }
 
+    // Función para agregar pedido a la lista visible
+    function agregarPedidoALista(pizza) {
+      const ahora = new Date();
+      const hora = ahora.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+      
+      pedidos.push({ pizza, hora });
+      renderizarPedidos();
+    }
+
+    // Función para mostrar los pedidos
+    function renderizarPedidos() {
+      const lista = document.getElementById("pedido-lista");
+      lista.innerHTML = "";
+      
+      pedidos.forEach((pedido, index) => {
+        const item = document.createElement("li");
+        item.className = "bg-yellow-50 p-3 rounded-lg";
+        item.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="font-semibold">${index + 1}. ${pedido.pizza}</span>
+            <span class="text-sm text-gray-500">${pedido.hora}</span>
+          </div>
+        `;
+        lista.appendChild(item);
+      });
     }
 
     // Función que simula pedir una pizza
@@ -394,9 +411,18 @@
       // Publicar el pedido por MQTT
       publicarPedidoMQTT(pizzaName);
 
-      // Mostrar QR con nombre del usuario
+      // Mostrar QR con nombre del usuario y pizza
       const qrCanvas = document.getElementById("qr-code");
-      QRCode.toCanvas(qrCanvas, `${currentUser}`, function (error) {
+      const qrData = `${currentUser}: ${pizzaName}\n${new Date().toLocaleString()}`;
+      
+      QRCode.toCanvas(qrCanvas, qrData, {
+        width: 400,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      }, function (error) {
         if (error) console.error(error);
         document.getElementById("pedido-confirmado").classList.remove("hidden");
         const btn = document.getElementById("confirmar-btn");
