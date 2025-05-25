@@ -81,14 +81,84 @@
   <main class="pt-24 bg-yellow-400">
 
     <!-- ========== CONTENIDO ========== -->
-    <section class="py-8 px-6 md:px-12">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Nuestra Planta en RoboDK</h2>
-        <div class="rounded-lg overflow-hidden shadow-xl bg-white p-4">
-          <img src="robodk-planta.jpg" alt="Planta de producción en RoboDK" class="w-full h-auto object-cover rounded-lg">
-        </div>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+      <div>
+        <h2 class="text-center text-xl font-semibold mb-2">Temperatura</h2>
+        <canvas id="tempChart"></canvas>
       </div>
-    </section>
+      <div>
+        <h2 class="text-center text-xl font-semibold mb-2">Humedad</h2>
+        <canvas id="humChart"></canvas>
+      </div>
+      <div>
+        <h2 class="text-center text-xl font-semibold mb-2">Nivel</h2>
+        <canvas id="nivelChart"></canvas>
+      </div>
+    </div>
+
+    <script>
+      // Conexión al broker (ej. broker público HiveMQ)
+      const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
+
+      client.on('connect', () => {
+        console.log('Conectado al broker MQTT');
+        client.subscribe('UPV/PR2/2-08/sensor/temperatura');
+        client.subscribe('UPV/PR2/2-08/sensor/humedad');        
+        client.subscribe('UPV/PR2/2-08/sensor/nivel');
+
+      });
+
+      // Inicializar gráficas
+      const tempChart = createChart('tempChart', 'Temperatura', 'red');
+      const humChart = createChart('humChart', 'Humedad', 'blue');
+      const nivelChart = createChart('nivelChart', 'Nivel', 'green');
+
+      function createChart(canvasId, label, color) {
+        return new Chart(document.getElementById(canvasId), {
+          type: 'line',
+          data: {
+            labels: [],
+            datasets: [{
+              label: label,
+              data: [],
+              borderColor: color,
+              tension: 0.3
+            }]
+          },
+          options: {
+            scales: {
+              x: { display: false },
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+
+      function addData(chart, value) {
+        const now = new Date().toLocaleTimeString();
+        chart.data.labels.push(now);
+        chart.data.datasets[0].data.push(parseFloat(value));
+        if (chart.data.labels.length > 20) {
+          chart.data.labels.shift();
+          chart.data.datasets[0].data.shift();
+        }
+        chart.update();
+      }
+
+      // Al recibir datos desde MQTT
+      client.on('message', (topic, message) => {
+        const value = message.toString();
+        if (topic === 'sensor/temperatura') addData(tempChart, value);
+        else if (topic === 'sensor/humedad') addData(humChart, value);
+        else if (topic === 'sensor/nivel') addData(nivelChart, value);
+      });
+    </script>
+
+
+
 
     <!-- ========== FOOTER ========== -->
 <footer class="bg-gray-800 text-white py-8 px-4 md:py-12 md:px-12"> <!-- Padding reducido en móviles -->
