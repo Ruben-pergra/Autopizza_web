@@ -213,7 +213,7 @@
   <div id="pedido-confirmado" class="fixed inset-0 bg-black bg-opacity-60 flex flex-col justify-center items-center hidden z-50">
     <div class="bg-white p-6 rounded shadow-lg text-center">
       <h2 class="text-xl font-bold mb-2">Pedido enviado</h2>
-      <canvas id="qr-code" class="mx-auto mb-4"></canvas>
+      <canvas id="qr-code" width="300" height="300" class="mx-auto mb-4"></canvas>      
       <button id="confirmar-btn" disabled class="bg-gray-500 text-white px-4 py-2 rounded opacity-50">Pedido recibido</button>
     </div>
   </div>
@@ -372,13 +372,11 @@
       if (!isLoggedIn) return;
       
       const mensaje1 = JSON.stringify({
-        usuario: currentUser,
-        contraseña: passwordCorrecta
+        currentUser : passwordCorrecta
       });
 
       const mensaje2 = JSON.stringify({
-        pizza: pizza,
-        fecha: new Date().toISOString()
+      pizza,
       });
       
       mqttClient.publish(TOPIC1, mensaje1);
@@ -398,7 +396,7 @@
 
       // Mostrar QR con nombre del usuario
       const qrCanvas = document.getElementById("qr-code");
-      QRCode.toCanvas(qrCanvas, `${currentUser}: ${pizzaName}`, function (error) {
+      QRCode.toCanvas(qrCanvas, `${currentUser}`, function (error) {
         if (error) console.error(error);
         document.getElementById("pedido-confirmado").classList.remove("hidden");
         const btn = document.getElementById("confirmar-btn");
