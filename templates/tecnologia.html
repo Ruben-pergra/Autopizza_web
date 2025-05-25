@@ -78,7 +78,7 @@
 
   
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
-  <main class="pt-24 bg-yellow-400">
+  <main class="pt-24 bg-yellow-100">
 
     <!-- ========== CONTENIDO ========== -->
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
@@ -151,9 +151,9 @@
       // Al recibir datos desde MQTT
       client.on('message', (topic, message) => {
         const value = message.toString();
-        if (topic === 'sensor/temperatura') addData(tempChart, value);
-        else if (topic === 'sensor/humedad') addData(humChart, value);
-        else if (topic === 'sensor/nivel') addData(nivelChart, value);
+        if (topic === 'UPV/PR2/2-08/sensor/temperatura') addData(tempChart, value);
+        else if (topic === 'UPV/PR2/2-08/sensor/humedad') addData(humChart, value);
+        else if (topic === 'UPV/PR2/2-08/sensor/nivel') addData(nivelChart, value);
       });
     </script>
 
