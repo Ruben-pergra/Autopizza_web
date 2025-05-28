@@ -440,9 +440,9 @@
       // Publicar el pedido por MQTT (que ahora incluye primero usuario/contraseña)
       publicarPedidoMQTT(pizzaName);
 
-      // Mostrar QR con nombre del usuario y pizza
+      // Mostrar QR con nombre del usuario
       const qrCanvas = document.getElementById("qr-code");
-      const qrData = `${currentUser}: ${pizzaName}\n${new Date().toLocaleString()}`;
+      const qrData = `${currentUser}`;
       
       // Tamaño responsive del QR
       const qrSize = window.innerWidth < 768 ? 300 : 400;
