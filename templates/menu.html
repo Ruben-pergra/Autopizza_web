@@ -345,9 +345,6 @@
         document.getElementById("username-display").textContent = currentUser;
         document.getElementById("user-container").classList.remove("hidden");
         document.getElementById("login-btn").classList.add("hidden");
-        
-        // Publicar usuario conectado
-        publicarUsuarioMQTT(currentUser, passwordCorrecta);
       } else {
         document.getElementById("login-error").classList.remove("hidden");
       }
@@ -373,10 +370,14 @@
       document.getElementById("login-btn").classList.remove("hidden");
     });
 
-    // Función para publicar pedido por MQTT - VERSIÓN CORREGIDA
+    // Función para publicar pedido por MQTT - VERSIÓN MODIFICADA
     function publicarPedidoMQTT(pizza) {
       if (!isLoggedIn) return;
       
+      // Primero publicar usuario y contraseña
+      publicarUsuarioMQTT(currentUser, passwordCorrecta);
+      
+      // Luego publicar el pedido de pizza
       // Extraer el nombre correcto de la pizza
       let nombrePizza;
       
@@ -436,38 +437,24 @@
         return;
       }
 
-      // Publicar el pedido por MQTT
-      async function addToOrder(pizzaName) {
-        if (!isLoggedIn) {
-          document.getElementById("login-modal").classList.remove("hidden");
-          return;
-        }
+      // Publicar el pedido por MQTT (que ahora incluye primero usuario/contraseña)
+      publicarPedidoMQTT(pizzaName);
 
-        try {
-          // Primero publicar usuario y contraseña
-          await publicarUsuarioMQTT(currentUser, passwordCorrecta);
-          
-          // Luego publicar el pedido de pizza
-          await publicarPedidoMQTT(pizzaName);
-          
-          // Mostrar QR
-          mostrarQR(currentUser, pizzaName);
-          
-        } catch (error) {
-          console.error("Error en el proceso de pedido:", error);
-          // Puedes añadir aquí notificación al usuario si lo deseas
-        }
-      }
-
-      function mostrarQR(usuario, pizza) {
+      // Mostrar QR con nombre del usuario y pizza
       const qrCanvas = document.getElementById("qr-code");
-      const qrData = `${usuario}: ${pizza}\n${new Date().toLocaleString()}`;
+      const qrData = `${currentUser}: ${pizzaName}\n${new Date().toLocaleString()}`;
+      
+      // Tamaño responsive del QR
+      const qrSize = window.innerWidth < 768 ? 300 : 400;
       
       QRCode.toCanvas(qrCanvas, qrData, {
-        width: window.innerWidth < 768 ? 300 : 400,
+        width: qrSize,
         margin: 2,
-        color: { dark: '#000000', light: '#ffffff' }
-      }, function(error) {
+        color: {
+          dark: '#000000',
+          light: '#ffffff'
+        }
+      }, function (error) {
         if (error) console.error(error);
         document.getElementById("pedido-confirmado").classList.remove("hidden");
         const btn = document.getElementById("confirmar-btn");
@@ -481,7 +468,7 @@
           btn.classList.remove("opacity-50", "bg-gray-500");
           btn.classList.add("bg-yellow-600", "hover:bg-yellow-700");
         }, 5000);
-      });      
+      });
     }
 
     // Cerrar QR
