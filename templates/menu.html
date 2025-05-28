@@ -296,8 +296,8 @@
 
     // MQTT Setup
     const mqttClient = mqtt.connect("wss://broker.emqx.io:8084/mqtt");
-    const TOPIC_USUARIO = "UPV/PR2/2-08/web/usuario";
-    const TOPIC_PEDIDOS = "UPV/PR2/2-08/web/pedidos";
+    const TOPIC_USUARIO = "UPV/PR2/2-08/recibir/usuario/robodk";
+    const TOPIC_PEDIDOS = "UPV/PR2/2-08/recibir/pizza/robodk";
 
     // Mostrar login modal
     document.getElementById("login-btn").addEventListener("click", () => {
@@ -437,23 +437,37 @@
       }
 
       // Publicar el pedido por MQTT
-      publicarPedidoMQTT(pizzaName);
+      async function addToOrder(pizzaName) {
+        if (!isLoggedIn) {
+          document.getElementById("login-modal").classList.remove("hidden");
+          return;
+        }
 
-      // Mostrar QR con nombre del usuario y pizza
+        try {
+          // Primero publicar usuario y contraseña
+          await publicarUsuarioMQTT(currentUser, passwordCorrecta);
+          
+          // Luego publicar el pedido de pizza
+          await publicarPedidoMQTT(pizzaName);
+          
+          // Mostrar QR
+          mostrarQR(currentUser, pizzaName);
+          
+        } catch (error) {
+          console.error("Error en el proceso de pedido:", error);
+          // Puedes añadir aquí notificación al usuario si lo deseas
+        }
+      }
+
+      function mostrarQR(usuario, pizza) {
       const qrCanvas = document.getElementById("qr-code");
-      const qrData = `${currentUser}: ${pizzaName}\n${new Date().toLocaleString()}`;
-      
-      // Tamaño responsive del QR
-      const qrSize = window.innerWidth < 768 ? 300 : 400;
+      const qrData = `${usuario}: ${pizza}\n${new Date().toLocaleString()}`;
       
       QRCode.toCanvas(qrCanvas, qrData, {
-        width: qrSize,
+        width: window.innerWidth < 768 ? 300 : 400,
         margin: 2,
-        color: {
-          dark: '#000000',
-          light: '#ffffff'
-        }
-      }, function (error) {
+        color: { dark: '#000000', light: '#ffffff' }
+      }, function(error) {
         if (error) console.error(error);
         document.getElementById("pedido-confirmado").classList.remove("hidden");
         const btn = document.getElementById("confirmar-btn");
@@ -467,7 +481,7 @@
           btn.classList.remove("opacity-50", "bg-gray-500");
           btn.classList.add("bg-yellow-600", "hover:bg-yellow-700");
         }, 5000);
-      });
+      });      
     }
 
     // Cerrar QR
