@@ -166,13 +166,13 @@
       });
     </script>
 
-    <section class="py-16 px-4 bg-white">
+    <section class="py-16 px-4 bg-yellow-100">
       <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Tecnologías Implementadas</h2>
       <div class="space-y-12 max-w-6xl mx-auto">
         {% set tecnologias = [
-          ("blender.png", "Blender", "Usado para el diseño 3D de los modelos físicos de la pizzería automática."),
-          ("robodk.png", "RoboDK", "Permite simular y programar los movimientos del brazo robótico."),
-          ("mqttx.png", "MQTTX", "Cliente para probar la comunicación MQTT entre dispositivos."),
+          ("blender.png", "Blender", "Usado para todos los diseños 3D de los modelos físicos de la pizzería automática, desde los ingredientes, pizzas, herramientas para el robot y todo lo que aparece en la simulación."),
+          ("robodk.png", "RoboDK", "Programa que nos permite simular y programar, no solo los movimientos del brazo robótico, sino también recrear nuestra simulación completa de nuestra planta completamente automatizada."),
+          ("mqttx.png", "MQTTX", "Usamos este programa para la comunicación MQTT entre dispositivos, contamos con dos placas esp32s3 las cuales se encargan de tanto recibir datos mediante sensores para mostrar por páginas en la web, como de la gestión de pedidos y el recibimiento mediante un código qr."),
           ("trello.png", "Trello", "Herramienta de organización de tareas y planificación del proyecto."),
           ("esp-idf.png", "ESP-IDF", "Framework oficial de Espressif para desarrollar en el ESP32."),
           ("github.png", "GitHub", "Control de versiones y colaboración en el desarrollo del software."),
@@ -196,11 +196,11 @@
       <div class="space-y-12 max-w-6xl mx-auto">
         {% set lenguajes = [
           ("c.png", "C", "Lenguaje principal para el firmware en ESP32 y control de periféricos."),
-          ("python.png", "Python", "Usado en simulaciones, procesamiento de datos y scripts de automatización."),
+          ("python.png", "Python", "Usado en simulaciones, procesamiento de datos y scripts de automatización en robodk."),
           ("sql.png", "SQL", "Consultas y gestión de la base de datos PostgreSQL."),
           ("html.png", "HTML", "Estructura principal del sitio web del proyecto."),
           ("css.png", "CSS", "Diseño visual y estilos del sitio web."),
-          ("js.png", "JavaScript", "Interactividad del sitio web y conexión con MQTT.")
+          ("js.png", "JavaScript", "Interactividad del sitio web y gestión de conexión con MQTT.")
         ] %}
         {% for imagen, nombre, descripcion in lenguajes %}
         <div class="flex flex-col md:flex-row {% if loop.index0 % 2 == 0 %}md:flex-row-reverse{% endif %} items-center gap-6 md:gap-12">
