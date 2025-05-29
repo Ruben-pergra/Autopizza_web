@@ -251,34 +251,54 @@
       <div class="max-w-6xl mx-auto">
         <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Procesos Automatizados</h2>
         <p class="text-center text-gray-700 mb-8">Conoce cómo nuestros robots preparan tu pizza favorita:</p>
-        <div class="grid md:grid-cols-2 gap-8">
+        
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+          <!-- Video 1 - Robot cortando -->
           <div class="bg-white p-4 rounded-lg shadow-lg">
-            <video 
-              class="w-full h-auto rounded-lg" 
-              controls
-              muted
-              loop
-              playsinline
-              poster="{{ url_for('static', filename='robot-cortando-poster.jpg') }}"
-            >
-              <source src="{{ url_for('static', filename='robot-cortando.mp4') }}" type="video/mp4">
-              Tu navegador no soporta el elemento de video.
-            </video>
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe 
+                class="w-full h-64 md:h-80 rounded-lg"
+                src="https://www.youtube.com/embed/jv_rZzwsRW0?controls=0" 
+                title="Robot cortando ingredientes" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
             <p class="mt-2 text-center text-gray-600">Robot cortando ingredientes</p>
           </div>
+          
+          <!-- Video 2 - Robot salsa -->
           <div class="bg-white p-4 rounded-lg shadow-lg">
-            <video 
-              class="w-full h-auto rounded-lg" 
-              controls
-              muted
-              loop
-              playsinline
-              poster="{{ url_for('static', filename='robot-salsa-poster.jpg') }}"
-            >
-              <source src="{{ url_for('static', filename='robot-salsa.mp4') }}" type="video/mp4">
-              Tu navegador no soporta el elemento de video.
-            </video>
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe 
+                class="w-full h-64 md:h-80 rounded-lg"
+                src="https://www.youtube.com/embed/GV3abfMt5QA?controls=0" 
+                title="Robot añadiendo salsa" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
             <p class="mt-2 text-center text-gray-600">Robot añadiendo salsa</p>
+          </div>
+        </div>
+
+        <!-- Nueva sección para simulación completa -->
+        <div class="mt-12">
+          <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Simulación Completa del Proceso</h3>
+          <div class="bg-white p-4 rounded-lg shadow-lg max-w-4xl mx-auto">
+            <div class="aspect-w-16 aspect-h-9">
+              <iframe 
+                class="w-full h-64 md:h-96 rounded-lg"
+                src="https://www.youtube.com/embed/lB1lVN1m0FE?controls=0" 
+                title="Simulación completa del proceso" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <p class="mt-2 text-center text-gray-600">Proceso completo de preparación automatizada</p>
           </div>
         </div>
       </div>
