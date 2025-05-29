@@ -84,6 +84,15 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- ========== TÍTULO Y DESCRIPCIÓN DE GRÁFICAS ========== -->
+    <section class="text-center py-8 px-4 max-w-4xl mx-auto">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">Monitoreo en Tiempo Real</h2>
+      <p class="text-lg text-gray-700">
+        A continuación, se muestran las gráficas con los datos en tiempo real de temperatura del horno, humedad de la zona de masas y nivel del dispensador de tomate recogidos por los sensores del sistema AutoPizza. 
+        Este monitoreo es crucial para mantener las condiciones óptimas durante el proceso automatizado de preparación de pizzas.
+      </p>
+    </section>
+
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
       <div>
         <h2 class="text-center text-xl font-semibold mb-2">Temperatura</h2>
@@ -156,6 +165,55 @@
         else if (topic === 'UPV/PR2/2-08/sensor/nivel') addData(nivelChart, value);
       });
     </script>
+
+    <section class="py-16 px-4 bg-white">
+      <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Tecnologías Implementadas</h2>
+      <div class="space-y-12 max-w-6xl mx-auto">
+        {% set tecnologias = [
+          ("blender.png", "Blender", "Usado para el diseño 3D de los modelos físicos de la pizzería automática."),
+          ("robodk.png", "RoboDK", "Permite simular y programar los movimientos del brazo robótico."),
+          ("mqttx.png", "MQTTX", "Cliente para probar la comunicación MQTT entre dispositivos."),
+          ("trello.png", "Trello", "Herramienta de organización de tareas y planificación del proyecto."),
+          ("esp-idf.png", "ESP-IDF", "Framework oficial de Espressif para desarrollar en el ESP32."),
+          ("github.png", "GitHub", "Control de versiones y colaboración en el desarrollo del software."),
+          ("postgresql.png", "PostgreSQL", "Base de datos relacional usada para almacenar pedidos y registros."),
+          ("arduino.png", "Arduino", "Usado inicialmente para prototipos y pruebas de sensores.")
+        ] %}
+        {% for imagen, nombre, descripcion in tecnologias %}
+        <div class="flex flex-col md:flex-row {% if loop.index0 % 2 == 1 %}md:flex-row-reverse{% endif %} items-center gap-6 md:gap-12">
+          <img src="{{ url_for('static', filename=imagen) }}" alt="{{ nombre }}" class="w-32 h-32 md:w-40 md:h-40 object-contain">
+          <div class="text-center md:text-left">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">{{ nombre }}</h3>
+            <p class="text-gray-700">{{ descripcion }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="py-16 px-4 bg-yellow-100">
+      <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Lenguajes de Programación Utilizados</h2>
+      <div class="space-y-12 max-w-6xl mx-auto">
+        {% set lenguajes = [
+          ("c.png", "C", "Lenguaje principal para el firmware en ESP32 y control de periféricos."),
+          ("python.png", "Python", "Usado en simulaciones, procesamiento de datos y scripts de automatización."),
+          ("sql.png", "SQL", "Consultas y gestión de la base de datos PostgreSQL."),
+          ("html.png", "HTML", "Estructura principal del sitio web del proyecto."),
+          ("css.png", "CSS", "Diseño visual y estilos del sitio web."),
+          ("js.png", "JavaScript", "Interactividad del sitio web y conexión con MQTT.")
+        ] %}
+        {% for imagen, nombre, descripcion in lenguajes %}
+        <div class="flex flex-col md:flex-row {% if loop.index0 % 2 == 0 %}md:flex-row-reverse{% endif %} items-center gap-6 md:gap-12">
+          <img src="{{ url_for('static', filename=imagen) }}" alt="{{ nombre }}" class="w-24 h-24 md:w-32 md:h-32 object-contain">
+          <div class="text-center md:text-left">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">{{ nombre }}</h3>
+            <p class="text-gray-700">{{ descripcion }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
 
 
 
