@@ -231,14 +231,14 @@
     </section>
 
     <!-- Sección del Código QR -->
-    <section class="py-12 px-6 md:px-12 bg-yellow-100">
+    <section class="py-12 px-6 md:px-12 bg-white">
       <div class="max-w-4xl mx-auto text-center">
         <h3 class="text-2xl font-bold text-gray-800 mb-6">Escanea nuestro código QR</h3>
         <p class="text-gray-600 mb-8">Visita nuestro Linktree directamente escaneando este código</p>
         
         <div class="flex justify-center">
           <div class="bg-white p-4 rounded-lg shadow-lg inline-block">
-            <img src="{{ url_for('static', filename='qr-code.jpeg') }}" alt="Código QR de AutoPizza" class="w-60 h-60 object-contain">
+            <img src="{{ url_for('static', filename='qr-code.jpeg') }}" alt="Código QR de AutoPizza" class="w-48 h-48 object-contain">
           </div>
         </div>
         
@@ -283,7 +283,8 @@
           <address class="not-italic text-sm md:text-base">
             <p class="mb-2">Calle de la Automatización, 123</p>
             <p class="mb-2">46021 Valencia, España</p>
-            <p class="mb-2">Email: autopizza23@gmail.com</p>
+            <p class="mb-2">Tel: +34 912 345 678</p>
+            <p class="mb-2">Email: info@autopizza.com</p>
           </address>
         </div>
       </div>
@@ -296,6 +297,28 @@
   </main>
 
   <script src="{{ url_for('static', filename='main.js') }}"></script>
+  <script>
+    // Script para el funcionamiento del FAQ
+    document.addEventListener('DOMContentLoaded', function() {
+      const questions = document.querySelectorAll('.faq-question');
+      
+      questions.forEach(question => {
+        question.addEventListener('click', function() {
+          const answer = this.nextElementSibling;
+          const icon = this.querySelector('svg');
+          
+          // Alternar la respuesta
+          answer.classList.toggle('hidden');
+          
+          // Rotar el icono
+          icon.classList.toggle('rotate-180');
+          
+          // Cambiar el fondo cuando está activo
+          this.classList.toggle('bg-yellow-50');
+        });
+      });
+    });
+  </script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
 </body>
 </html>
