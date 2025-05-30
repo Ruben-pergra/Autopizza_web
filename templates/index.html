@@ -279,5 +279,27 @@
 
   <script src="{{ url_for('static', filename='main.js') }}"></script>
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+   <script>Add commentMore actions
+    // Script para el funcionamiento del FAQ
+    document.addEventListener('DOMContentLoaded', function() {
+      const questions = document.querySelectorAll('.faq-question');
+      
+      questions.forEach(question => {
+        question.addEventListener('click', function() {
+          const answer = this.nextElementSibling;
+          const icon = this.querySelector('svg');
+          
+          // Alternar la respuesta
+          answer.classList.toggle('hidden');
+          
+          // Rotar el icono
+          icon.classList.toggle('rotate-180');
+          
+          // Cambiar el fondo cuando está activo
+          this.classList.toggle('bg-yellow-50');
+        });
+      });
+    });
+  </script>
 </body>
 </html>
