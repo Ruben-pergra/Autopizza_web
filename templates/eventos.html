@@ -77,7 +77,7 @@
   </div>
 
   <!-- ========== CONTENIDO PRINCIPAL ========== -->
-  <main class="pt-24 bg-yellow-400">
+  <main class="pt-24 bg-yellow-100">
     <!-- Sección de Eventos -->
     <section class="py-12 px-6 md:px-12">
       <div class="max-w-4xl mx-auto">
@@ -86,7 +86,7 @@
         <!-- Evento actual -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-12">
           <div class="p-6 md:p-8">
-            <h3 class="text-2xl font-bold text-gray-800 mb-4">Exposición de Proyectos UPV</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-4"> Feria de Proyectos IX Edición Robótica y Ciencia de datos en la UPV</h3>
             
             <div class="grid md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -102,7 +102,7 @@
                 <p class="text-gray-600">Grupo PR2-2-08<br>Primer turno</p>
                 
                 <h4 class="text-lg font-semibold text-gray-700 mb-2">ℹ️ Detalles:</h4>
-                <p class="text-gray-600">Presentaremos nuestro proyecto de robótica aplicada a la gastronomía. ¡Ven a probar nuestras pizzas automatizadas!</p>
+                <p class="text-gray-600">Presentaremos nuestro proyecto de robótica basado en la automatización de una pizzería. ¡Ven a probar nuestras pizzas automatizadas!</p>
               </div>
             </div>
             
@@ -129,11 +129,96 @@
         <!-- Próximos eventos (se puede añadir más) -->
         <div class="text-center">
           <h3 class="text-xl font-bold text-gray-800 mb-4">Mantente atento a nuestros próximos eventos</h3>
-          <p class="text-gray-600">Estamos planeando más demostraciones en diferentes ubicaciones. ¡Síguenos en redes sociales para no perderte nada!</p>
+          <p class="text-gray-600">Estamos planeando más demostraciones en diferentes ubicaciones. ¡Súbete al barco de la revolución robótico-gastronómica, síguenos en redes sociales para no perderte nada!</p>
         </div>
       </div>
     </section>
 
+    <!-- Sección de Reseñas estilo Red Social -->
+    <section class="py-12 px-6 md:px-12 bg-yellow-100">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">#AutoPizzaExperiences</h2>
+        <p class="text-center text-gray-600 mb-12">Descubre lo que dicen nuestros clientes</p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- Post 1 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="h-80 overflow-hidden"> <!-- Contenedor para foto vertical -->
+            <img src="{{ url_for('static', filename='cliente1.jpg') }}" alt="Cliente disfrutando AutoPizza" class="w-full h-full object-cover">
+            <div class="p-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden mr-3">
+                  <img src="{{ url_for('static', filename='perfil1.jpg') }}" alt="Perfil Rubén" class="w-full h-full object-cover">
+                </div>
+                <span class="font-semibold">r_pergra</span>
+              </div>
+              <p class="text-gray-800 mb-2">¡No hay nada que entre mejor después de perder 3 partidas seguidas al LoL! #TecnologíaQueAlimenta</p>
+              <div class="flex text-yellow-400 mb-3">
+                ★ ★ ★ ★ ★
+              </div>
+              <p class="text-xs text-gray-500">Publicado el 25/05/2025</p>
+            </div>
+          </div>
+
+          <!-- Post 2 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="h-80 overflow-hidden"> <!-- Contenedor para foto vertical -->
+            <img src="{{ url_for('static', filename='cliente2.jpg') }}" alt="Cliente disfrutando AutoPizza" class="w-full h-full object-cover">
+            <div class="p-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden mr-3">
+                  <img src="{{ url_for('static', filename='perfil2.jpg') }}" alt="Perfil Nuria" class="w-full h-full object-cover">
+                </div>
+                <span class="font-semibold">little_ch</span>
+              </div>
+              <p class="text-gray-800 mb-2"> Pedí mi pizza pensando que el tamaño iba ser pequeñita como yo así chiquitita, pero resultó ser bastante grande. 🤖👨‍🍳 #InnovaciónGastronómica</p>
+              <div class="flex text-yellow-400 mb-3">
+                ★ ★ ★ ★ ★
+              </div>
+              <p class="text-xs text-gray-500">Publicado el 26/05/2025</p>
+            </div>
+          </div>
+
+          <!-- Post 3 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="h-80 overflow-hidden"> <!-- Contenedor para foto vertical -->
+            <img src="{{ url_for('static', filename='cliente3.jpg') }}" alt="Cliente disfrutando AutoPizza" class="w-full h-full object-cover">
+            <div class="p-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden mr-3">
+                  <img src="{{ url_for('static', filename='perfil3.jpg') }}" alt="Perfil Pablo" class="w-full h-full object-cover">
+                </div>
+                <span class="font-semibold">big.panzer</span>
+              </div>
+              <p class="text-gray-800 mb-2">Gordo, nada mejor que una pizza después del gym. ¡No parece hecho por robots! 😲 #SaborAuténtico</p>
+              <div class="flex text-yellow-400 mb-3">
+                ★ ★ ★ ★ ★
+              </div>
+              <p class="text-xs text-gray-500">Publicado el 08/05/2025</p>
+            </div>
+          </div>
+
+          <!-- Post 4 -->
+          <div class="border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div class="h-80 overflow-hidden"> <!-- Contenedor para foto vertical -->
+            <img src="{{ url_for('static', filename='cliente4.jpg') }}" alt="Cliente disfrutando AutoPizza" class="w-full h-full object-cover">
+            <div class="p-4">
+              <div class="flex items-center mb-3">
+                <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden mr-3">
+                  <img src="{{ url_for('static', filename='perfil4.jpg') }}" alt="Perfil Carla" class="w-full h-full object-cover">
+                </div>
+                <span class="font-semibold">gabri.feo</span>
+              </div>
+              <p class="text-gray-800 mb-2">Lo único malo del pedido fue darme cuenta que solo era una simulación y no podía comerla en la vida real, por ello mi decepción final. 🍕</p>
+              <div class="flex text-yellow-400 mb-3">
+                ★ ★ ★ ★ ☆
+              </div>
+              <p class="text-xs text-gray-500">Publicado el 28/05/2025</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- ========== FOOTER ========== -->
     <footer class="bg-gray-800 text-white py-8 px-4 md:py-12 md:px-12">
       <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
